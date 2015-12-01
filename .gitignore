@@ -1,0 +1,32 @@
+*.log
+*.class
+
+.gwt
+.settings
+.errai
+
+# build
+/target
+/war
+
+# Eclipse
+.classpath
+.project
+.settings
+/WebContent
+*.launch
+
+# IntelliJ
+*.iml
+*.ipr
+*.iws
+.idea/
+
+.DS_Store
+*.class
+
+
+# Package Files #
+*.jar
+*.war
+*.ear
