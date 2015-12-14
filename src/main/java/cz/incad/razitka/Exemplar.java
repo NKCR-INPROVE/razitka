@@ -8,6 +8,7 @@ import org.aplikator.client.shared.data.ContainerNode;
 import org.aplikator.client.shared.data.Record;
 import org.aplikator.server.Context;
 import org.aplikator.server.data.BinaryData;
+import org.aplikator.server.descriptor.BinaryField;
 import org.aplikator.server.descriptor.Entity;
 import org.aplikator.server.descriptor.Form;
 import org.aplikator.server.descriptor.Property;
@@ -63,9 +64,9 @@ public class Exemplar extends Entity {
         form.setLayout(column(
                 row(napis),
                 row(
-                        column(obrazek).setSize(8),
-                        column(row( column(new TextArea(signatura).setRows(14)).setSize(6),
-                                column(new TextArea(sys).setRows(14)).setSize(6)
+                        column(new BinaryField(obrazek).setHeight(400).useThumbnail(false)).setSize(8),
+                        column(row( column(new TextArea(signatura).setRows(21)).setSize(6),
+                                column(new TextArea(sys).setRows(21)).setSize(6)
                                 )).setSize(4)
                 ),
                 row(druh, prijmeni, instituce),
