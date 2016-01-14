@@ -68,19 +68,6 @@ public class ImportRazitek extends Executable {
                 //Get first/desired sheet from the workbook
                 XSSFSheet sheet = workbook.getSheetAt(0);
 
-                //Fill map of links between rows and imageindexes
-                XSSFDrawing drawing = sheet.getDrawingPatriarch();
-                TreeMap<Integer, Integer> rowsToIndexes = new TreeMap<Integer, Integer>();
-                int i = 0;
-                for (XSSFShape shape : drawing.getShapes()) {
-                    XSSFClientAnchor anchor = (XSSFClientAnchor) shape.getAnchor();
-                    rowsToIndexes.put(anchor.getRow1(), i);
-                    i++;
-                }
-
-                //get list of pictures
-                List<XSSFPictureData> allPictures = workbook.getAllPictures();
-                System.out.println("allPictures:"+allPictures.size());
 
 
                 Tempstore ts = TempstoreFactory.getTempstore();
@@ -96,6 +83,7 @@ public class ImportRazitek extends Executable {
 
                     RecordContainer rc = new RecordContainer();
                     Record kniha = RecordUtils.newRecord(Structure.Exemplar);
+                    String fileUI= null;
 
                     //For each row, iterate through all the columns
                     Iterator<Cell> cellIterator = row.cellIterator();
@@ -113,51 +101,58 @@ public class ImportRazitek extends Executable {
                                 String sys = cell.getStringCellValue().replaceAll(";\\s*","\n").trim();
                                 Structure.Exemplar.sys.setValue(kniha, sys);
                                 break;
-                            case 2: //NAPIS
+                            case 2: //UI
+                                fileUI = cell.getStringCellValue();
+                                break;
+                            case 3: //NAPIS
                                 String napis = cell.getStringCellValue();
                                 Structure.Exemplar.napis.setValue(kniha, napis);
                                 break;
-                            case 4: //DRUH
+                            case 5: //DRUH
                                 String druh = cell.getStringCellValue().replaceAll(";","").trim();
                                 Structure.Exemplar.druh.setValue(kniha, druh);
                                 break;
-                            case 5: //PRIJMENI
+                            case 6: //PRIJMENI
                                 String prijmeni = cell.getStringCellValue().replaceAll(";","").trim();
                                 Structure.Exemplar.prijmeni.setValue(kniha, prijmeni);
                                 break;
-                            case 6: //INSTIRUCE
+                            case 7: //INSTIRUCE
                                 String instituce = cell.getStringCellValue().replaceAll(";","").trim();
                                 Structure.Exemplar.instituce.setValue(kniha, instituce);
                                 break;
-                            case 7: //OBECNE
+                            case 8: //OBECNE
                                 String obecne = cell.getStringCellValue().replaceAll(";","").trim();
                                 Structure.Exemplar.obecne.setValue(kniha, obecne);
                                 break;
-                            case 8: //MESTO
+                            case 9: //MESTO
                                 String mesto = cell.getStringCellValue().replaceAll(";","").trim();
                                 Structure.Exemplar.mesto.setValue(kniha, mesto);
                                 break;
                         }
                     }
-                    Integer pictureIndex = rowsToIndexes.get(rowNo+1);
-                    System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!ROW:"+(rowNo+1)+"->"+pictureIndex);
-                    if (pictureIndex != null) {
-                        XSSFPictureData pict = allPictures.get(pictureIndex);
-                        String ext = pict.suggestFileExtension();
-                        byte[] data = pict.getData();
-                        InputStream pictStream = new ByteArrayInputStream(data);
-                        if (ext.equals("jpeg")) {
-                            String fileTempID = ts.store("pict" + pictureIndex + ".jpg", pictStream, false);
+                    System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!FILE:"+fileUI);
+                    if (fileUI != null && !"".equals(fileUI)) {
+                        final String fileprefix = fileUI;
+                        File[] pictures = importList.listFiles(new FilenameFilter() {
+                            public boolean accept(File dir, String name) {
+                                if (name != null && name.toLowerCase().startsWith(fileprefix)){
+                                    return true;
+                                }
+                                return false;
+                            }
+                        });
+                        if (pictures.length==1) {
+                            InputStream pictStream = new FileInputStream(pictures[0]);
+                            String fileTempID = ts.store(pictures[0].getName(), pictStream, false);
                             kniha.setValue(Structure.Exemplar.obrazek.getId(), fileTempID);
-                        } else if (ext.equals("png")) {
-                            String fileTempID = ts.store("pict" + pictureIndex + ".png", pictStream, false);
-                            kniha.setValue(Structure.Exemplar.obrazek.getId(), fileTempID);
+                            pictStream.close();
                         }
-                        pictStream.close();
+                    }else{
+                        continue;
                     }
                     rc.addRecord(Structure.Exemplar.view().getId(), kniha, kniha, Operation.CREATE);
                     rc = context.getAplikatorService().processRecords(rc);
-                    if (rowNo == allPictures.size()-1) break;
+                   // if (rowNo == allPictures.size()-1) break;
 
                 }
                 logger.info("KONEC:"+(rowNo+1));
@@ -165,7 +160,7 @@ public class ImportRazitek extends Executable {
 
 
             } catch (Throwable th) {
-                logger.log(Level.SEVERE,"ERROR IMPORTING ZIPFILE: "+file.getName(),th);
+                logger.log(Level.SEVERE,"ERROR IMPORTING XLSX FILE: "+file.getName(),th);
                 //return new FunctionResult("Chyba importu:"+th.getMessage(), false);
             } finally {
                 // we must always close the zip file.
