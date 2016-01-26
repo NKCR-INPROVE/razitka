@@ -54,23 +54,23 @@
 
     <servlet-mapping>
         <servlet-name>aplikatorInitializer</servlet-name>
-        <url-pattern>/razitka/ddl</url-pattern>
+        <url-pattern>/ddl</url-pattern>
     </servlet-mapping>
 
 
     <servlet-mapping>
         <servlet-name>fileUploadServlet</servlet-name>
-        <url-pattern>/razitka/upload</url-pattern>
+        <url-pattern>/upload</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
         <servlet-name>fileDownloadServlet</servlet-name>
-        <url-pattern>/razitka/download</url-pattern>
+        <url-pattern>/download</url-pattern>
     </servlet-mapping>
 
     <!-- Default page to serve -->
     <welcome-file-list>
-        <welcome-file>Razitka.html</welcome-file>
+        <welcome-file>index.html</welcome-file>
     </welcome-file-list>
 
     <resource-ref>
@@ -98,7 +98,7 @@
           <web-resource-collection>
               <web-resource-name>Admin Protected area</web-resource-name>
               <description>no description</description>
-              <url-pattern>/razitka/ddl</url-pattern>
+              <url-pattern>/ddl</url-pattern>
               <http-method>GET</http-method>
               <http-method>POST</http-method>
           </web-resource-collection>
