@@ -55,7 +55,9 @@ public class Exemplar extends Entity {
         retval.addSortDescriptor("id", "Exemplar.id", SortItem.ascending(this.getPrimaryKey()));
         retval.addSortDescriptor("druh", "Exemplar.druh", SortItem.ascending(druh));
         retval.addSortDescriptor("napis", "Exemplar.napis", SortItem.ascending(napis));
-        retval.addSortDescriptor("instituce", "Exemplar.instituce", SortItem.descending(instituce));
+        retval.addSortDescriptor("instituce", "Exemplar.instituce", SortItem.ascending(instituce));
+        retval.addSortDescriptor("nejnovejsi", "latest", SortItem.descending(getTimeStamp()));
+
         //retval.addQueryDescriptor("vyberKnihy", "VybratKnihu", ulozeni.LIKE(QueryParameterReference.param(0)), new QueryParameter("KodKnihy"));
         //retval.addQueryDescriptor("vse", "VybratVse", ulozeni.LIKE("%"), new QueryParameter[]{});
 
