@@ -6,6 +6,7 @@ import static org.aplikator.server.descriptor.Panel.row;
 
 import org.aplikator.client.shared.data.ContainerNode;
 import org.aplikator.client.shared.data.Record;
+import org.aplikator.client.shared.descriptor.QueryParameter;
 import org.aplikator.server.Context;
 import org.aplikator.server.data.BinaryData;
 import org.aplikator.server.descriptor.BinaryField;
@@ -16,6 +17,7 @@ import org.aplikator.server.descriptor.SortItem;
 import org.aplikator.server.descriptor.TextArea;
 import org.aplikator.server.descriptor.View;
 import org.aplikator.server.persistence.PersisterTriggers;
+import org.aplikator.server.query.QueryParameterReference;
 
 import cz.incad.razitka.server.Structure;
 
@@ -52,14 +54,13 @@ public class Exemplar extends Entity {
     protected View initDefaultView() {
         View retval = new View(this).setListPanelWidth(2).setPageSize(20);
         retval.addProperty(sys).addProperty(signatura).addProperty(napis).addProperty(druh).addProperty(prijmeni).addProperty(instituce).addProperty(obecne).addProperty(mesto);
-        retval.addSortDescriptor("id", "Exemplar.id", SortItem.ascending(this.getPrimaryKey()));
-        retval.addSortDescriptor("druh", "Exemplar.druh", SortItem.ascending(druh));
-        retval.addSortDescriptor("napis", "Exemplar.napis", SortItem.ascending(napis));
-        retval.addSortDescriptor("instituce", "Exemplar.instituce", SortItem.ascending(instituce));
-        retval.addSortDescriptor("nejnovejsi", "latest", SortItem.descending(getTimeStamp()));
+        retval.addSortDescriptor("id_asc", "Exemplar.id", SortItem.ascending(this.getPrimaryKey()));
+        retval.addSortDescriptor("id_desc", "Exemplar.id", SortItem.descending(this.getPrimaryKey()));
 
-        //retval.addQueryDescriptor("vyberKnihy", "VybratKnihu", ulozeni.LIKE(QueryParameterReference.param(0)), new QueryParameter("KodKnihy"));
-        //retval.addQueryDescriptor("vse", "VybratVse", ulozeni.LIKE("%"), new QueryParameter[]{});
+        retval.addQueryDescriptor("vse", "searchAll", null);
+        retval.addQueryDescriptor("vybersignatury", "searchSignatura", signatura.LIKE(QueryParameterReference.param(0)), new QueryParameter("Exemplar.signatura"));
+
+        retval.addQueryDescriptor("vybersys", "searchSys", sys.LIKE(QueryParameterReference.param(0)), new QueryParameter("Exemplar.sys"));
 
 
         Form form = new Form(false);
@@ -67,8 +68,8 @@ public class Exemplar extends Entity {
                 row(napis),
                 row(
                         column(new BinaryField(obrazek).setHeight(400).useThumbnail(false)).setSize(8),
-                        column(row( column(new TextArea(signatura).setRows(21)).setSize(6),
-                                column(new TextArea(sys).setRows(21)).setSize(6)
+                        column(row( new TextArea(signatura).setRows(21).setSize(6),
+                                new TextArea(sys).setRows(21).setSize(6)
                                 )).setSize(4)
                 ),
                 row(druh, prijmeni, instituce),
