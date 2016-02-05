@@ -42,7 +42,7 @@ public class Exemplar extends Entity {
         sys = textProperty("sys");
         napis = stringProperty("napis");
         obrazek = binaryProperty("obrazek");
-        druh = stringProperty("druh").setListProvider(cz.incad.razitka.Utils.namedList(Structure.DLists, DLists.DListsType.Dulozeni));;
+        druh = stringProperty("druh").setListProvider(cz.incad.razitka.Utils.namedList(Structure.DLists, DLists.DListsType.druh));;
         prijmeni = stringProperty("prijmeni");
         instituce = stringProperty("instituce");
         obecne = stringProperty("obecne");

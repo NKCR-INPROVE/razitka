@@ -68,25 +68,18 @@ public class DLists extends Entity {
     }
     
     public enum DListsType {
-        DroleAutor, Dulozeni, DlistJazyk, DlistTematika
+        druh, obecne
     }
 
-    public View DroleAutor() {
-        return inheritanceView(this.view(), classType, DListsType.DroleAutor);
+    public View druh() {
+        return inheritanceView(this.view(), classType, DListsType.druh);
     }
 
-    public View Dulozeni() {
-        return inheritanceView(this.view(), classType, DListsType.Dulozeni);
+    public View obecne() {
+        return inheritanceView(this.view(), classType, DListsType.obecne);
     }
 
-    public View DlistJazyk() {
-        return inheritanceView(this.view(), classType, DListsType.DlistJazyk);
-    }
 
-    public View DlistTematika() {
-        return inheritanceView(this.view(), classType, DListsType.DlistTematika);
-    }
-    
     public void initFields() {
         classType = stringProperty("classType");
         value = stringProperty("value");

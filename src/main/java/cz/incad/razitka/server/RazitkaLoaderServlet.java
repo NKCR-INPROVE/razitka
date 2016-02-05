@@ -28,7 +28,7 @@ public class RazitkaLoaderServlet extends ApplicationLoaderServlet {
             menuAgendy.addView(Structure.Exemplar.view());
 
             Menu menuAdministrace = new Menu("administrace");
-            menuAdministrace.addView(Structure.DLists.Dulozeni());
+            menuAdministrace.addView(Structure.DLists.druh());
             Function importFunction = new Function("ImportRazitek", "ImportRazitek", new ImportRazitek());
             menuAdministrace.addFunction(importFunction);
 
