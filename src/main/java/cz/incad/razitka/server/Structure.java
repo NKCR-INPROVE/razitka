@@ -31,6 +31,7 @@ public class Structure extends Application {
     @Override
     public ApplicationDTO getApplicationDTO(Context ctx) {
         ApplicationDTO retval = new ApplicationDTO();
+
         for (Menu m : menus) {
             if (!m.getId().equals("Menu:administrace")) {
                 retval.addMenu(m.getMenuDTO(ctx));
@@ -39,8 +40,15 @@ public class Structure extends Application {
             }
         }
         retval.setBrand(Configurator.get().getLocalizedString(Configurator.BRAND, ctx.getUserLocale()));
-        retval.setShowNavigation(showNavigation);
-        retval.setDefaultAction(defaultActionToken);
+        if (!ctx.getHttpServletRequest().isUserInRole("admin")){
+            retval.setDefaultAction("list/"+Exemplar.view().getId());
+            retval.setShowNavigation(false);
+        }else{
+            retval.setDefaultAction(null);
+            retval.setShowNavigation(true);
+        }
+        //retval.setShowNavigation(showNavigation);
+
         Set<Map.Entry<String, ConfigValue>> configSet = Configurator.get().getConfig().entrySet();
         for (Map.Entry<String, ConfigValue> entry : configSet) {
             if (entry.getKey().startsWith("aplikator")) {
