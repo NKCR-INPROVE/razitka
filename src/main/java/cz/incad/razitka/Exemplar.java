@@ -59,8 +59,12 @@ public class Exemplar extends Entity {
 
         retval.addQueryDescriptor("vse", "searchAll", null);
         retval.addQueryDescriptor("vybersignatury", "searchSignatura", signatura.LIKE(QueryParameterReference.param(0)), new QueryParameter("Exemplar.signatura"));
-
         retval.addQueryDescriptor("vybersys", "searchSys", sys.LIKE(QueryParameterReference.param(0)), new QueryParameter("Exemplar.sys"));
+        retval.addQueryDescriptor("vybernazev", "searchNazev", napis.LIKE(QueryParameterReference.param(0)), new QueryParameter("Exemplar.napis"));
+        retval.addQueryDescriptor("vyberprijmeni", "searchPrijmeni", prijmeni.LIKE(QueryParameterReference.param(0)), new QueryParameter("Exemplar.prijmeni"));
+        retval.addQueryDescriptor("vyberinstituce", "searchInstituce", instituce.LIKE(QueryParameterReference.param(0)), new QueryParameter("Exemplar.instituce"));
+        retval.addQueryDescriptor("vyberobecne", "searchObecne", obecne.LIKE(QueryParameterReference.param(0)), new QueryParameter("Exemplar.obecne"));
+        retval.addQueryDescriptor("vybermesto", "searchMesto", mesto.LIKE(QueryParameterReference.param(0)), new QueryParameter("Exemplar.mesto"));
 
 
         Form form = new Form(false);
