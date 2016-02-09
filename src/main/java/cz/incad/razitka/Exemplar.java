@@ -53,18 +53,7 @@ public class Exemplar extends Entity {
     @Override
     protected View initDefaultView() {
         View retval = new View(this).setListPanelWidth(2).setPageSize(20);
-        retval.addProperty(sys).addProperty(signatura).addProperty(napis).addProperty(druh).addProperty(prijmeni).addProperty(instituce).addProperty(obecne).addProperty(mesto);
-        retval.addSortDescriptor("id_asc", "Exemplar.id", SortItem.ascending(this.getPrimaryKey()));
-        retval.addSortDescriptor("id_desc", "Exemplar.id", SortItem.descending(this.getPrimaryKey()));
-
-        retval.addQueryDescriptor("vse", "searchAll", null);
-        retval.addQueryDescriptor("vybersignatury", "searchSignatura", signatura.LIKE(QueryParameterReference.param(0)), new QueryParameter("Exemplar.signatura"));
-        retval.addQueryDescriptor("vybersys", "searchSys", sys.LIKE(QueryParameterReference.param(0)), new QueryParameter("Exemplar.sys"));
-        retval.addQueryDescriptor("vybernazev", "searchNazev", napis.LIKE(QueryParameterReference.param(0)), new QueryParameter("Exemplar.napis"));
-        retval.addQueryDescriptor("vyberprijmeni", "searchPrijmeni", prijmeni.LIKE(QueryParameterReference.param(0)), new QueryParameter("Exemplar.prijmeni"));
-        retval.addQueryDescriptor("vyberinstituce", "searchInstituce", instituce.LIKE(QueryParameterReference.param(0)), new QueryParameter("Exemplar.instituce"));
-        retval.addQueryDescriptor("vyberobecne", "searchObecne", obecne.LIKE(QueryParameterReference.param(0)), new QueryParameter("Exemplar.obecne"));
-        retval.addQueryDescriptor("vybermesto", "searchMesto", mesto.LIKE(QueryParameterReference.param(0)), new QueryParameter("Exemplar.mesto"));
+        retval.addProperty(napis).addProperty(sys).addProperty(signatura).addProperty(druh).addProperty(prijmeni).addProperty(instituce).addProperty(obecne).addProperty(mesto);
 
 
         Form form = new Form(false);
