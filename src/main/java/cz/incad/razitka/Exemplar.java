@@ -92,7 +92,7 @@ public class Exemplar extends Entity {
         
         @Override
         public void onLoad(Record record, Context ctx) {
-            record.setPreview("<B>"+ sys.getStringValue(record).split("\n")[0]+"</B><br> "+ napis.getStringValue(record));
+            record.setPreview("<B>"+ sys.getStringValue(record, ctx).split("\n")[0]+"</B><br> "+ napis.getStringValue(record, ctx));
         }
     }
     
