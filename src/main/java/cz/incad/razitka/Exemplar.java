@@ -5,19 +5,16 @@ import static org.aplikator.server.descriptor.Panel.column;
 import static org.aplikator.server.descriptor.Panel.row;
 
 import org.aplikator.client.shared.data.ContainerNode;
-import org.aplikator.client.shared.data.Record;
-import org.aplikator.client.shared.descriptor.QueryParameter;
+import org.aplikator.client.shared.data.RecordDTO;
 import org.aplikator.server.Context;
 import org.aplikator.server.data.BinaryData;
 import org.aplikator.server.descriptor.BinaryField;
 import org.aplikator.server.descriptor.Entity;
 import org.aplikator.server.descriptor.Form;
 import org.aplikator.server.descriptor.Property;
-import org.aplikator.server.descriptor.SortItem;
 import org.aplikator.server.descriptor.TextArea;
 import org.aplikator.server.descriptor.View;
 import org.aplikator.server.persistence.PersisterTriggers;
-import org.aplikator.server.query.QueryParameterReference;
 
 import cz.incad.razitka.server.Structure;
 
@@ -91,7 +88,7 @@ public class Exemplar extends Entity {
         }
         
         @Override
-        public void onLoad(Record record, Context ctx) {
+        public void onLoad(RecordDTO record, Context ctx) {
             record.setPreview("<B>"+ sys.getStringValue(record, ctx).split("\n")[0]+"</B><br> "+ napis.getStringValue(record, ctx));
         }
     }

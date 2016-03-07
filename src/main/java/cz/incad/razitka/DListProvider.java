@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.aplikator.client.shared.data.ListItem;
-import org.aplikator.client.shared.data.Record;
+import org.aplikator.client.shared.data.RecordDTO;
 import org.aplikator.server.AplikatorServiceServer;
 import org.aplikator.server.Context;
 import org.aplikator.server.descriptor.ListProvider;
@@ -59,8 +59,8 @@ public class DListProvider extends ListProvider.Default {
        			listValues.get(loc).clear();
        		}
 			AplikatorServiceServer aplService = (AplikatorServiceServer) ctx.getAplikatorService();
-	       	List<Record> records = aplService.getRecords(view, listEntity.classType.EQUAL(listName.name()), new SortItem[]{SortItem.ascending(listEntity.poradi)},null, null, null, 0, 0, ctx);
-	       	for (Record record : records) {
+	       	List<RecordDTO> records = aplService.getRecords(view, listEntity.classType.EQUAL(listName.name()), new SortItem[]{SortItem.ascending(listEntity.poradi)},null, null, null, 0, 0, ctx);
+	       	for (RecordDTO record : records) {
 	       		for (locales loc : locales.values()) {
 	       			ListItem listItem = new ListItem.Default((String) listEntity.value.getValue(record), (String) localeProperties.get(loc).getValue(record));
 	       			listValues.get(loc.name()).add(listItem);

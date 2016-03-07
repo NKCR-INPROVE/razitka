@@ -4,7 +4,7 @@ import static org.aplikator.server.descriptor.Panel.column;
 import static org.aplikator.server.descriptor.Panel.row;
 
 import org.aplikator.client.shared.data.ContainerNode;
-import org.aplikator.client.shared.data.Record;
+import org.aplikator.client.shared.data.RecordDTO;
 import org.aplikator.server.Context;
 import org.aplikator.server.descriptor.Entity;
 import org.aplikator.server.descriptor.Form;
@@ -47,7 +47,7 @@ public class DLists extends Entity {
         }
         
         @Override
-        public void onLoad(Record record, Context ctx) {
+        public void onLoad(RecordDTO record, Context ctx) {
             record.setPreview(cz.getValue(record)+" - "+value.getValue(record));
         }
     }

@@ -1,28 +1,21 @@
 package cz.incad.razitka;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FilenameFilter;
 import java.io.InputStream;
 import java.util.Iterator;
-import java.util.List;
-import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.xssf.usermodel.XSSFClientAnchor;
-import org.apache.poi.xssf.usermodel.XSSFDrawing;
-import org.apache.poi.xssf.usermodel.XSSFPictureData;
-import org.apache.poi.xssf.usermodel.XSSFShape;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.aplikator.client.shared.data.FunctionParameters;
 import org.aplikator.client.shared.data.FunctionResult;
 import org.aplikator.client.shared.data.Operation;
-import org.aplikator.client.shared.data.Record;
+import org.aplikator.client.shared.data.RecordDTO;
 import org.aplikator.client.shared.data.RecordContainer;
 import org.aplikator.server.Context;
 import org.aplikator.server.data.RecordUtils;
@@ -82,7 +75,7 @@ public class ImportRazitek extends Executable {
                     if (rowNo == -1) continue;
 
                     RecordContainer rc = new RecordContainer();
-                    Record kniha = RecordUtils.newRecord(Structure.Exemplar);
+                    RecordDTO kniha = RecordUtils.newRecord(Structure.Exemplar);
                     String fileUI= null;
 
                     //For each row, iterate through all the columns
@@ -183,7 +176,7 @@ public class ImportRazitek extends Executable {
 
 
     @Override
-    public WizardPage getWizardPage(String currentPage, boolean forwardFlag, Record currentProcessingRecord, Record clientParameters, Context context) {
+    public WizardPage getWizardPage(String currentPage, boolean forwardFlag, RecordDTO currentProcessingRecord, RecordDTO clientParameters, Context context) {
         return null;
     }
 
