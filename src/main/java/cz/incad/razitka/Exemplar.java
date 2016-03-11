@@ -4,7 +4,7 @@ package cz.incad.razitka;
 import static org.aplikator.server.descriptor.Panel.column;
 import static org.aplikator.server.descriptor.Panel.row;
 
-import org.aplikator.client.shared.data.ContainerNode;
+import org.aplikator.client.shared.data.ContainerNodeDTO;
 import org.aplikator.client.shared.data.RecordDTO;
 import org.aplikator.server.Context;
 import org.aplikator.server.data.BinaryData;
@@ -73,17 +73,17 @@ public class Exemplar extends Entity {
 
     private class ExemplarTriggers extends PersisterTriggers.Default {
         @Override
-        public void onPrepare(ContainerNode node, boolean isCopy, Context ctx) {
+        public void onPrepare(ContainerNodeDTO node, boolean isCopy, Context ctx) {
             super.onPrepare(node, isCopy, ctx);
         }
 
         @Override
-        public void onCreate(ContainerNode node, Context ctx) {
+        public void onCreate(ContainerNodeDTO node, Context ctx) {
             super.onCreate(node, ctx);
         }
 
         @Override
-        public void onUpdate(ContainerNode node, Context ctx) {
+        public void onUpdate(ContainerNodeDTO node, Context ctx) {
             super.onUpdate(node, ctx);
         }
         

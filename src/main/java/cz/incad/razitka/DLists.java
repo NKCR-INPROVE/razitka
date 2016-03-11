@@ -3,7 +3,7 @@ package cz.incad.razitka;
 import static org.aplikator.server.descriptor.Panel.column;
 import static org.aplikator.server.descriptor.Panel.row;
 
-import org.aplikator.client.shared.data.ContainerNode;
+import org.aplikator.client.shared.data.ContainerNodeDTO;
 import org.aplikator.client.shared.data.RecordDTO;
 import org.aplikator.server.Context;
 import org.aplikator.server.descriptor.Entity;
@@ -34,7 +34,7 @@ public class DLists extends Entity {
     
     class DlistTriggers extends PersisterTriggers.Default {        
         @Override
-        public void afterCommit(ContainerNode node, Context ctx) {         
+        public void afterCommit(ContainerNodeDTO node, Context ctx) {
             super.afterCommit(node, ctx);
             String listName = classType.getValue(node.getMerged());
             if (listName==null) {

@@ -15,8 +15,8 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.aplikator.client.shared.data.FunctionParameters;
 import org.aplikator.client.shared.data.FunctionResult;
 import org.aplikator.client.shared.data.Operation;
+import org.aplikator.client.shared.data.RecordContainerDTO;
 import org.aplikator.client.shared.data.RecordDTO;
-import org.aplikator.client.shared.data.RecordContainer;
 import org.aplikator.server.Context;
 import org.aplikator.server.data.RecordUtils;
 import org.aplikator.server.descriptor.WizardPage;
@@ -74,7 +74,7 @@ public class ImportRazitek extends Executable {
                     //if (rowNo >200) break;
                     if (rowNo == -1) continue;
 
-                    RecordContainer rc = new RecordContainer();
+                    RecordContainerDTO rc = new RecordContainerDTO();
                     RecordDTO kniha = RecordUtils.newRecord(Structure.Exemplar);
                     String fileUI= null;
 
