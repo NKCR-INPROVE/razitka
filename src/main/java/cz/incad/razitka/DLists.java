@@ -3,9 +3,9 @@ package cz.incad.razitka;
 import static org.aplikator.server.descriptor.Panel.column;
 import static org.aplikator.server.descriptor.Panel.row;
 
-import org.aplikator.client.shared.data.ContainerNodeDTO;
-import org.aplikator.client.shared.data.RecordDTO;
 import org.aplikator.server.Context;
+import org.aplikator.server.data.ContainerNode;
+import org.aplikator.server.data.Record;
 import org.aplikator.server.descriptor.Entity;
 import org.aplikator.server.descriptor.Form;
 import org.aplikator.server.descriptor.Property;
@@ -34,9 +34,9 @@ public class DLists extends Entity {
     
     class DlistTriggers extends PersisterTriggers.Default {        
         @Override
-        public void afterCommit(ContainerNodeDTO node, Context ctx) {
+        public void afterCommit(ContainerNode node, Context ctx) {
             super.afterCommit(node, ctx);
-            String listName = classType.getValue(node.getMerged());
+            String listName = node.getMerged().getValue(classType);
             if (listName==null) {
                 return;
             }
@@ -47,8 +47,8 @@ public class DLists extends Entity {
         }
         
         @Override
-        public void onLoad(RecordDTO record, Context ctx) {
-            record.setPreview(cz.getValue(record)+" - "+value.getValue(record));
+        public void onLoad(Record record, Context ctx) {
+            record.setPreview(record.getValue(cz)+" - "+record.getValue(value));
         }
     }
     

@@ -4,10 +4,10 @@ package cz.incad.razitka;
 import static org.aplikator.server.descriptor.Panel.column;
 import static org.aplikator.server.descriptor.Panel.row;
 
-import org.aplikator.client.shared.data.ContainerNodeDTO;
-import org.aplikator.client.shared.data.RecordDTO;
 import org.aplikator.server.Context;
 import org.aplikator.server.data.BinaryData;
+import org.aplikator.server.data.ContainerNode;
+import org.aplikator.server.data.Record;
 import org.aplikator.server.descriptor.BinaryField;
 import org.aplikator.server.descriptor.Entity;
 import org.aplikator.server.descriptor.Form;
@@ -73,23 +73,23 @@ public class Exemplar extends Entity {
 
     private class ExemplarTriggers extends PersisterTriggers.Default {
         @Override
-        public void onPrepare(ContainerNodeDTO node, boolean isCopy, Context ctx) {
+        public void onPrepare(ContainerNode node, boolean isCopy, Context ctx) {
             super.onPrepare(node, isCopy, ctx);
         }
 
         @Override
-        public void onCreate(ContainerNodeDTO node, Context ctx) {
+        public void onCreate(ContainerNode node, Context ctx) {
             super.onCreate(node, ctx);
         }
 
         @Override
-        public void onUpdate(ContainerNodeDTO node, Context ctx) {
+        public void onUpdate(ContainerNode node, Context ctx) {
             super.onUpdate(node, ctx);
         }
         
         @Override
-        public void onLoad(RecordDTO record, Context ctx) {
-            record.setPreview("<B>"+ sys.getStringValue(record, ctx).split("\n")[0]+"</B><br> "+ napis.getStringValue(record, ctx));
+        public void onLoad(Record record, Context ctx) {
+            record.setPreview("<B>"+ record.getStringValue(sys, ctx).split("\n")[0]+"</B><br> "+ record.getStringValue(napis, ctx));
         }
     }
     

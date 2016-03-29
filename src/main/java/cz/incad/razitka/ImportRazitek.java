@@ -12,12 +12,11 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.aplikator.client.shared.data.FunctionParameters;
 import org.aplikator.client.shared.data.FunctionResult;
 import org.aplikator.client.shared.data.Operation;
-import org.aplikator.client.shared.data.RecordContainerDTO;
-import org.aplikator.client.shared.data.RecordDTO;
 import org.aplikator.server.Context;
+import org.aplikator.server.data.Record;
+import org.aplikator.server.data.RecordContainer;
 import org.aplikator.server.data.RecordUtils;
 import org.aplikator.server.descriptor.WizardPage;
 import org.aplikator.server.function.Executable;
@@ -36,7 +35,7 @@ public class ImportRazitek extends Executable {
 
 
     @Override
-    public FunctionResult execute(FunctionParameters parameters, Context context) {
+    public FunctionResult execute(Record currentRecord, Record wizardParameters, Context context) {
         Config config = Configurator.get().getConfig();
         String importFolder = config.getString("razitka.importFolder");
         logger.info("STARTED IMPORT: "+importFolder);
@@ -74,8 +73,8 @@ public class ImportRazitek extends Executable {
                     //if (rowNo >200) break;
                     if (rowNo == -1) continue;
 
-                    RecordContainerDTO rc = new RecordContainerDTO();
-                    RecordDTO kniha = RecordUtils.newRecord(Structure.Exemplar);
+                    RecordContainer rc = new RecordContainer();
+                    Record kniha = RecordUtils.newRecord(Structure.Exemplar);
                     String fileUI= null;
 
                     //For each row, iterate through all the columns
@@ -88,38 +87,38 @@ public class ImportRazitek extends Executable {
                         switch (cell.getColumnIndex()) {
                             case 0:  //SIGNATURA
                                 String signatura = cell.getStringCellValue().replaceAll(";\\s*","\n").trim();
-                                Structure.Exemplar.signatura.setValue(kniha, signatura);
+                                kniha.setValue(Structure.Exemplar.signatura, signatura);
                                 break;
                             case 1: //SYS
                                 String sys = cell.getStringCellValue().replaceAll(";\\s*","\n").trim();
-                                Structure.Exemplar.sys.setValue(kniha, sys);
+                                kniha.setValue(Structure.Exemplar.sys, sys);
                                 break;
                             case 2: //UI
                                 fileUI = cell.getStringCellValue();
                                 break;
                             case 3: //NAPIS
                                 String napis = cell.getStringCellValue();
-                                Structure.Exemplar.napis.setValue(kniha, napis);
+                                kniha.setValue(Structure.Exemplar.napis, napis);
                                 break;
                             case 5: //DRUH
                                 String druh = cell.getStringCellValue().replaceAll(";","").trim();
-                                Structure.Exemplar.druh.setValue(kniha, druh);
+                                kniha.setValue(Structure.Exemplar.druh, druh);
                                 break;
                             case 6: //PRIJMENI
                                 String prijmeni = cell.getStringCellValue().replaceAll(";","").trim();
-                                Structure.Exemplar.prijmeni.setValue(kniha, prijmeni);
+                                kniha.setValue(Structure.Exemplar.prijmeni, prijmeni);
                                 break;
                             case 7: //INSTIRUCE
                                 String instituce = cell.getStringCellValue().replaceAll(";","").trim();
-                                Structure.Exemplar.instituce.setValue(kniha, instituce);
+                                kniha.setValue(Structure.Exemplar.instituce, instituce);
                                 break;
                             case 8: //OBECNE
                                 String obecne = cell.getStringCellValue().replaceAll(";","").trim();
-                                Structure.Exemplar.obecne.setValue(kniha, obecne);
+                                kniha.setValue(Structure.Exemplar.obecne, obecne);
                                 break;
                             case 9: //MESTO
                                 String mesto = cell.getStringCellValue().replaceAll(";","").trim();
-                                Structure.Exemplar.mesto.setValue(kniha, mesto);
+                                kniha.setValue(Structure.Exemplar.mesto, mesto);
                                 break;
                         }
                     }
@@ -137,7 +136,7 @@ public class ImportRazitek extends Executable {
                         if (pictures.length==1) {
                             InputStream pictStream = new FileInputStream(pictures[0]);
                             String fileTempID = ts.store(pictures[0].getName(), pictStream, false);
-                            kniha.setValue(Structure.Exemplar.obrazek.getId(), fileTempID);
+                           // kniha.setValue(Structure.Exemplar.obrazek, fileTempID); //TODO resolve bindata  - String class cast
                             pictStream.close();
                         }
                     }else{
@@ -176,7 +175,7 @@ public class ImportRazitek extends Executable {
 
 
     @Override
-    public WizardPage getWizardPage(String currentPage, boolean forwardFlag, RecordDTO currentProcessingRecord, RecordDTO clientParameters, Context context) {
+    public WizardPage getWizardPage(String currentPage, boolean forwardFlag, Record currentRecord, Record wizardParameters, Context context) {
         return null;
     }
 
