@@ -13,16 +13,14 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.aplikator.client.shared.data.FunctionResult;
-import org.aplikator.client.shared.data.Operation;
-import org.aplikator.server.Context;
+import org.aplikator.server.Configurator;
+import org.aplikator.server.data.Context;
+import org.aplikator.server.data.Executable;
 import org.aplikator.server.data.Record;
-import org.aplikator.server.data.RecordContainer;
 import org.aplikator.server.data.RecordUtils;
 import org.aplikator.server.descriptor.WizardPage;
-import org.aplikator.server.function.Executable;
 import org.aplikator.server.persistence.tempstore.Tempstore;
 import org.aplikator.server.persistence.tempstore.TempstoreFactory;
-import org.aplikator.server.util.Configurator;
 
 import com.typesafe.config.Config;
 
@@ -73,7 +71,6 @@ public class ImportRazitek extends Executable {
                     //if (rowNo >200) break;
                     if (rowNo == -1) continue;
 
-                    RecordContainer rc = new RecordContainer();
                     Record kniha = RecordUtils.newRecord(Structure.Exemplar);
                     String fileUI= null;
 
@@ -142,9 +139,9 @@ public class ImportRazitek extends Executable {
                     }else{
                         continue;
                     }
-                    rc.addRecord(Structure.Exemplar.view().getId(), kniha, kniha, Operation.CREATE);
-                    rc = context.getAplikatorService().processRecords(rc);
-                   // if (rowNo == allPictures.size()-1) break;
+                    context.addNewRecordToContainer(kniha);
+                    context.processRecordContainer();
+                    // if (rowNo == allPictures.size()-1) break;
 
                 }
                 logger.info("KONEC:"+(rowNo+1));

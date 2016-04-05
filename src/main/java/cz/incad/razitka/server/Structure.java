@@ -5,11 +5,11 @@ import java.util.Map;
 import java.util.Set;
 
 import org.aplikator.client.shared.descriptor.ApplicationDTO;
-import org.aplikator.server.Context;
+import org.aplikator.server.data.Context;
 import org.aplikator.server.descriptor.Application;
 import org.aplikator.server.descriptor.ListProvider;
 import org.aplikator.server.descriptor.Menu;
-import org.aplikator.server.util.Configurator;
+import org.aplikator.server.Configurator;
 
 import com.typesafe.config.ConfigValue;
 
