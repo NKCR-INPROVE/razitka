@@ -21,6 +21,7 @@ public class DListProvider extends ListProvider.Default {
     private Map<Enum<?>, Property<String>> localeProperties;
 
     public DListProvider(DLists listEntity, Enum<?> listName) {
+        super(listName.name());
         init();
         this.listName = listName;
         this.listEntity = listEntity;

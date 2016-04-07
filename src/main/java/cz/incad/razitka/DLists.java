@@ -3,17 +3,16 @@ package cz.incad.razitka;
 import static org.aplikator.server.descriptor.Panel.column;
 import static org.aplikator.server.descriptor.Panel.row;
 
-import org.aplikator.server.data.Context;
+import org.aplikator.server.ListRegistry;
 import org.aplikator.server.data.ContainerNode;
+import org.aplikator.server.data.Context;
+import org.aplikator.server.data.PersisterTriggers;
 import org.aplikator.server.data.Record;
 import org.aplikator.server.descriptor.Entity;
 import org.aplikator.server.descriptor.Form;
 import org.aplikator.server.descriptor.Property;
 import org.aplikator.server.descriptor.TextArea;
 import org.aplikator.server.descriptor.View;
-import org.aplikator.server.data.PersisterTriggers;
-
-import cz.incad.razitka.server.Structure;
 
 public class DLists extends Entity {
     public Property<String> classType;
@@ -40,7 +39,7 @@ public class DLists extends Entity {
             if (listName==null) {
                 return;
             }
-            DListProvider listProvider = (DListProvider) Structure.listProviders.get(DListsType.valueOf(listName));
+            DListProvider listProvider = (DListProvider) ListRegistry.get().getListProvider(listName);
             if (listProvider!=null) {
                 listProvider.refreshListValues(ctx);
             }

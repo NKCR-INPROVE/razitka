@@ -1,27 +1,22 @@
 package cz.incad.razitka.server;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
 import org.aplikator.client.shared.descriptor.ApplicationDTO;
+import org.aplikator.server.Configurator;
 import org.aplikator.server.data.Context;
 import org.aplikator.server.descriptor.Application;
-import org.aplikator.server.descriptor.ListProvider;
 import org.aplikator.server.descriptor.Menu;
-import org.aplikator.server.Configurator;
 
 import com.typesafe.config.ConfigValue;
 
-import cz.incad.razitka.Exemplar;
 import cz.incad.razitka.DLists;
+import cz.incad.razitka.Exemplar;
 
 
 public class Structure extends Application {
-    // Lists
-    public static final HashMap<Enum<?>, ListProvider> listProviders = new HashMap<Enum<?>, ListProvider>();
-    
-    
+
     public static final DLists DLists = new DLists();
     public static final Exemplar Exemplar = new Exemplar();
 
