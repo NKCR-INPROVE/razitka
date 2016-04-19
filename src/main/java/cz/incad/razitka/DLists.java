@@ -9,10 +9,14 @@ import org.aplikator.server.data.Context;
 import org.aplikator.server.data.PersisterTriggers;
 import org.aplikator.server.data.Record;
 import org.aplikator.server.descriptor.Entity;
+import org.aplikator.server.descriptor.EntityListProvider;
 import org.aplikator.server.descriptor.Form;
 import org.aplikator.server.descriptor.Property;
+import org.aplikator.server.descriptor.SortItem;
 import org.aplikator.server.descriptor.TextArea;
 import org.aplikator.server.descriptor.View;
+
+import cz.incad.razitka.server.Structure;
 
 public class DLists extends Entity {
     public Property<String> classType;
@@ -24,6 +28,18 @@ public class DLists extends Entity {
     public Property<Boolean> use;
     public Property<Integer> poradi;
     public Property<String> poznamka;
+
+    private static final String LIST_DRUH = "listDruh";
+
+    static public EntityListProvider listDruh() {
+        EntityListProvider listProvider = (EntityListProvider)ListRegistry.get().getListProvider(LIST_DRUH);
+        if (listProvider==null) {
+            listProvider = new EntityListProvider(LIST_DRUH, Structure.DLists.druh(), Structure.DLists.value);
+            listProvider.addLanguageProperty("cs", Structure.DLists.cz);
+            listProvider.addLanguageProperty("en", Structure.DLists.en);
+        }
+        return listProvider;
+    }
     
     public DLists() {
         super("DLists","DLists", "DLists_ID");
@@ -35,14 +51,7 @@ public class DLists extends Entity {
         @Override
         public void afterCommit(ContainerNode node, Context ctx) {
             super.afterCommit(node, ctx);
-            String listName = node.getMerged().getValue(classType);
-            if (listName==null) {
-                return;
-            }
-            DListProvider listProvider = (DListProvider) ListRegistry.get().getListProvider(listName);
-            if (listProvider!=null) {
-                listProvider.refreshListValues(ctx);
-            }
+            listDruh().refreshListValues(ctx);
         }
         
         @Override
@@ -54,7 +63,8 @@ public class DLists extends Entity {
     @Override
     protected View initDefaultView() {
         View retval = new View(this);
-        retval.addProperty(value).addProperty(cz);
+        retval.addProperty(value).addProperty(cz).addProperty(en).addProperty(de).addProperty(fr);
+        retval.insertFirstSortDescriptor(poradi.getId(), poradi.getLocalizationKey(), SortItem.ascending(poradi));
         Form form = new Form(false);
         form.setLayout(column(
                 row(value, cz),
@@ -70,8 +80,12 @@ public class DLists extends Entity {
         druh, obecne
     }
 
+    private View viewDruh;
     public View druh() {
-        return inheritanceView(this.view(), classType, DListsType.druh);
+        if (viewDruh == null) {
+            viewDruh = inheritanceView(this.view(), classType, DListsType.druh);
+        }
+        return viewDruh;
     }
 
     public View obecne() {

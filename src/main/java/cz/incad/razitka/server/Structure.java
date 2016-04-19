@@ -42,7 +42,6 @@ public class Structure extends Application {
             retval.setDefaultAction(null);
             retval.setShowNavigation(true);
         }
-        //retval.setShowNavigation(showNavigation);
 
         Set<Map.Entry<String, ConfigValue>> configSet = Configurator.get().getConfig().entrySet();
         for (Map.Entry<String, ConfigValue> entry : configSet) {
