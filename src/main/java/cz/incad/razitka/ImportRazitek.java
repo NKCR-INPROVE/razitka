@@ -14,6 +14,7 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.aplikator.client.shared.data.FunctionResult;
 import org.aplikator.server.Configurator;
+import org.aplikator.server.data.BinaryData;
 import org.aplikator.server.data.Context;
 import org.aplikator.server.data.Executable;
 import org.aplikator.server.data.Record;
@@ -133,7 +134,7 @@ public class ImportRazitek extends Executable {
                         if (pictures.length==1) {
                             InputStream pictStream = new FileInputStream(pictures[0]);
                             String fileTempID = ts.store(pictures[0].getName(), pictStream, false);
-                           // kniha.setValue(Structure.Exemplar.obrazek, fileTempID); //TODO resolve bindata  - String class cast
+                            kniha.setValue(Structure.Exemplar.obrazek, new BinaryData(pictures[0].getName(),ts.load(fileTempID),ts.getFileLength(fileTempID),fileTempID));
                             pictStream.close();
                         }
                     }else{
