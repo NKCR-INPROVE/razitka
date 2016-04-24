@@ -55,7 +55,7 @@ public class DLists extends Entity {
         }
         
         @Override
-        public void onLoad(Record record, Context ctx) {
+        public void onLoad(Record record, View view, Context ctx) {
             record.setPreview(record.getValue(cz)+" - "+record.getValue(value));
         }
     }

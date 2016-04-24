@@ -88,7 +88,7 @@ public class Exemplar extends Entity {
         }
         
         @Override
-        public void onLoad(Record record, Context ctx) {
+        public void onLoad(Record record, View view, Context ctx) {
             record.setPreview("<B>"+ record.getStringValue(sys, ctx).split("\n")[0]+"</B><br> "+ record.getStringValue(napis, ctx));
         }
     }
