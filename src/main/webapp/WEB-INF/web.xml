@@ -88,14 +88,6 @@
         <welcome-file>index.html</welcome-file>
     </welcome-file-list>
 
-    <resource-ref>
-        <description>DataSource Reference For The Database</description>
-        <res-ref-name>jdbc/aplikatorDS</res-ref-name>
-        <res-type>javax.sql.DataSource</res-type>
-        <res-auth>Container</res-auth>
-        <res-sharing-scope>Shareable</res-sharing-scope>
-    </resource-ref>
-    
     <security-constraint>
           <web-resource-collection>
               <web-resource-name>Protected area</web-resource-name>
