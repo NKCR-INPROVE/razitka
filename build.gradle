@@ -1,0 +1,66 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'de.richsource.gradle.plugins:gwt-gradle-plugin:0.6'
+    }
+}
+
+
+apply plugin: 'java'
+apply plugin: 'war'
+apply plugin: 'gwt'
+
+configurations {
+    capsule
+    capsuleMaven
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+gwt {
+    gwtVersion='2.7.0'
+    modules 'cz.incad.razitka.Razitka'
+}
+
+dependencies {
+    gwt "org.aplikator:aplikator:0.5-SNAPSHOT"
+
+    runtime "org.postgresql:postgresql:9.3-1101-jdbc41",
+            "com.oracle.jdbc:ojdbc7:12.1.0.2"
+
+    compile "org.aplikator:aplikator:0.5-SNAPSHOT"
+
+    providedCompile 'javax.servlet:javax.servlet-api:3.1.0'
+
+    capsule 'co.paralleluniverse:capsule:1.0.3'
+    capsuleMaven 'co.paralleluniverse:capsule-maven:1.0'
+}
+
+war {
+    from(configurations.capsule.collect { zipTree(it) })
+    from configurations.capsuleMaven
+
+    duplicatesStrategy 'exclude'
+
+
+    manifest {
+        attributes(
+                'Main-Class'                : 'Capsule',
+                'Premain-Class'             : 'Capsule',
+                'Caplets'                   : 'co.paralleluniverse:capsule-maven:1.0',
+                'Application'               : 'com.github.jsimone:webapp-runner:8.0.33.1',
+                'Allow-Snapshots'           : 'true',
+                'Min-Java-Version'          : '1.7.0',
+                'Args'                      : '--path /razitka $CAPSULE_JAR'
+        )
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.4'
+}
