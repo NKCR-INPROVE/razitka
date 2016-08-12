@@ -8,6 +8,7 @@
 # build
 /target
 /war
+/build
 
 # Eclipse
 .classpath
@@ -24,6 +25,7 @@
 
 .DS_Store
 *.class
+.gradle
 
 
 # Package Files #
