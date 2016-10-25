@@ -31,7 +31,7 @@ public class Structure extends Application {
 
     @Override
     public ApplicationDTO getApplicationDTO(Context ctx) {
-        ApplicationDTO retval = new ApplicationDTO(ctx.getHttpServletRequest().getRemoteUser());
+        ApplicationDTO retval = new ApplicationDTO(ctx.getHttpServletRequest().getRemoteUser(),  ctx.getUserLocale().getLanguage());
 
         for (Menu m : menus) {
             if (!m.getId().equals("Menu:administrace")) {
