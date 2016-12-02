@@ -134,7 +134,7 @@ public class ImportRazitek extends Executable {
                         if (pictures.length==1) {
                             InputStream pictStream = new FileInputStream(pictures[0]);
                             String fileTempID = ts.store(pictures[0].getName(), pictStream, false);
-                            kniha.setValue(Structure.Exemplar.obrazek, new BinaryData(pictures[0].getName(),ts.load(fileTempID),ts.getFileLength(fileTempID),fileTempID));
+                            kniha.setValue(Structure.Exemplar.obrazek, new BinaryData(Structure.Exemplar.obrazek, pictures[0].getName(),ts.load(fileTempID),ts.getFileLength(fileTempID),fileTempID));
                             pictStream.close();
                         }
                     }else{

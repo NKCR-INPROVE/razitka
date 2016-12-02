@@ -9,6 +9,7 @@ import org.aplikator.server.data.BinaryData;
 import org.aplikator.server.data.ContainerNode;
 import org.aplikator.server.data.Record;
 import org.aplikator.server.descriptor.BinaryField;
+import org.aplikator.server.descriptor.BinaryProperty;
 import org.aplikator.server.descriptor.Entity;
 import org.aplikator.server.descriptor.Form;
 import org.aplikator.server.descriptor.Property;
@@ -22,7 +23,7 @@ public class Exemplar extends Entity {
     public Property<String> signatura;
     public Property<String> sys;
     public Property<String> napis;
-    public Property<BinaryData> obrazek;
+    public BinaryProperty obrazek;
     public Property<String> druh;
     public Property<String> prijmeni;
     public Property<String> instituce;
