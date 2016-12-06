@@ -23,7 +23,7 @@ public class Exemplar extends Entity {
     public Property<String> signatura;
     public Property<String> sys;
     public Property<String> napis;
-    public BinaryProperty obrazek;
+    public BinaryProperty   obrazek;
     public Property<String> druh;
     public Property<String> prijmeni;
     public Property<String> instituce;
@@ -56,7 +56,7 @@ public class Exemplar extends Entity {
 
         Form form = new Form(false);
         form.setLayout(column(
-                row(napis),
+                row(napis.widget().setSize(10), new ExportCSV()),
                 row(
                         column(new BinaryField(obrazek).setHeight(400).useThumbnail(false)).setSize(8),
                         column(row( new TextArea(signatura).setRows(21).setSize(6),

@@ -12,6 +12,7 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.aplikator.client.shared.data.ClientContext;
 import org.aplikator.client.shared.data.FunctionResult;
 import org.aplikator.server.Configurator;
 import org.aplikator.server.data.BinaryData;
@@ -34,7 +35,7 @@ public class ImportRazitek extends Executable {
 
 
     @Override
-    public FunctionResult execute(Record currentRecord, Record wizardParameters, Context context) {
+    public FunctionResult execute(Record currentRecord, Record wizardParameters, ClientContext clientContext, Context context) {
         Config config = Configurator.get().getConfig();
         String importFolder = config.getString("razitka.importFolder");
         logger.info("STARTED IMPORT: "+importFolder);
@@ -173,7 +174,7 @@ public class ImportRazitek extends Executable {
 
 
     @Override
-    public WizardPage getWizardPage(String currentPage, boolean forwardFlag, Record currentRecord, Record wizardParameters, Context context) {
+    public WizardPage getWizardPage(String currentPage, boolean forwardFlag, Record currentRecord, Record wizardParameters, ClientContext clientContext, Context context) {
         return null;
     }
 
