@@ -12,6 +12,7 @@ import org.aplikator.server.descriptor.BinaryField;
 import org.aplikator.server.descriptor.BinaryProperty;
 import org.aplikator.server.descriptor.Entity;
 import org.aplikator.server.descriptor.Form;
+import org.aplikator.server.descriptor.Function;
 import org.aplikator.server.descriptor.Property;
 import org.aplikator.server.descriptor.TextArea;
 import org.aplikator.server.descriptor.View;
@@ -53,10 +54,12 @@ public class Exemplar extends Entity {
         View retval = new View(this).setListPanelWidth(2).setPageSize(20);
         retval.addProperty(napis).addProperty(sys).addProperty(signatura).addProperty(druh).addProperty(prijmeni).addProperty(instituce).addProperty(obecne).addProperty(mesto);
 
+        retval.addFunction(new ExportCSV());
+        //retval.addFunction(new Function("ImportRazitek2", "ImportRazitek2", new ImportRazitek()));
 
         Form form = new Form(false);
         form.setLayout(column(
-                row(napis.widget().setSize(10), new ExportCSV()),
+                row(napis),
                 row(
                         column(new BinaryField(obrazek).setHeight(400).useThumbnail(false)).setSize(8),
                         column(row( new TextArea(signatura).setRows(21).setSize(6),
