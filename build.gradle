@@ -28,6 +28,13 @@ repositories {
 gwt {
     gwtVersion='2.7.0'
     modules 'cz.incad.razitka.Razitka'
+
+    minHeapSize = "512M";
+    maxHeapSize = "1024M";
+
+    superDev {
+        noPrecompile=true
+    }
 }
 
 dependencies {
