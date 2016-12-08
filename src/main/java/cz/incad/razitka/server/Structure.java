@@ -6,9 +6,11 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.aplikator.client.shared.descriptor.Access;
 import org.aplikator.client.shared.descriptor.ApplicationDTO;
 import org.aplikator.server.Configurator;
 import org.aplikator.server.data.Context;
+import org.aplikator.server.descriptor.AccessControl;
 import org.aplikator.server.descriptor.Application;
 import org.aplikator.server.descriptor.Function;
 import org.aplikator.server.descriptor.Menu;
@@ -28,48 +30,34 @@ public class Structure extends Application {
 
     static {
     }
-
+/*
     @Override
     public ApplicationDTO getApplicationDTO(Context ctx) {
-        ApplicationDTO retval = new ApplicationDTO(ctx.getHttpServletRequest().getRemoteUser(),  ctx.getUserLocale().getLanguage());
+        ApplicationDTO retval = super.getApplicationDTO(ctx);
 
-        for (Menu m : menus) {
-            if (!m.getId().equals("Menu:administrace")) {
-                retval.addMenu(m.getMenuDTO(ctx));
-            }else if (ctx.getHttpServletRequest().isUserInRole("admin")){
-                retval.addMenu(m.getMenuDTO(ctx));
-            }
-        }
-        retval.setBrand(Configurator.get().getLocalizedString(Configurator.BRAND, ctx.getUserLocale()));
         if (!ctx.getHttpServletRequest().isUserInRole("admin")){
-            retval.setDefaultAction("list/"+Exemplar.view().getId());
             retval.setShowNavigation(false);
         }else{
-            retval.setDefaultAction(null);
             retval.setShowNavigation(true);
         }
-
-        Set<Map.Entry<String, ConfigValue>> configSet = Configurator.get().getConfig().entrySet();
-        for (Map.Entry<String, ConfigValue> entry : configSet) {
-            if (entry.getKey().startsWith("aplikator")) {
-                retval.setConfigString(entry.getKey(), entry.getValue().render());
-            }
-        }
-        retval.getConfig().putAll(Configurator.get().getSystemLabels(ctx.getUserLocale()));
         return retval;
     }
+*/
 
     @Override
     public void initialize()  {
         try {
             LOG.info("Razitka Loader started");
-
+            Exemplar.setAccessControl(AccessControl.Default.authenticatedFullAccess());
+            DLists.setAccessControl(AccessControl.Default.authenticated(Access.NONE).role("admin", Access.READ_WRITE_CREATE_DELETE));
+            setDefaultAction("list/"+Exemplar.view().getId());
             Menu menuAgendy = new Menu("agendy");
             menuAgendy.addView(Structure.Exemplar.view());
 
             Menu menuAdministrace = new Menu("administrace");
             menuAdministrace.addView(Structure.DLists.druh());
             Function importFunction = new Function("ImportRazitek", "ImportRazitek", new ImportRazitek());
+            importFunction.setAccessControl(AccessControl.Default.authenticated(Access.NONE).role("admin", Access.READ_WRITE_CREATE_DELETE));
             menuAdministrace.addFunction(importFunction);
 
             addMenu(menuAgendy).addMenu(menuAdministrace);

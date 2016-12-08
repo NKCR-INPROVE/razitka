@@ -78,14 +78,14 @@ public class ExportCSV extends Function {
 
 
 
-                StringBuilder sb = new StringBuilder("\"ID\","+
-                        "\"Nápis\"," +
-                        "\"Signatura\"," +
-                        "\"Sys\"," +
-                        "\"Druh\"," +
-                        "\"Osoba\"," +
-                        "\"Instituce\"," +
-                        "\"Obecné poznámky\"," +
+                StringBuilder sb = new StringBuilder("\"ID\";"+
+                        "\"Nápis\";" +
+                        "\"Signatura\";" +
+                        "\"Sys\";" +
+                        "\"Druh\";" +
+                        "\"Osoba\";" +
+                        "\"Instituce\";" +
+                        "\"Obecné poznámky\";" +
                         "\"Město\"\r\n");
 
                 logger.info("STARTED READING RECORDS ");
@@ -94,22 +94,22 @@ public class ExportCSV extends Function {
                         .withSort(sortItems)
                         .list()) {
                     logger.info("RECORD:"+slozka.getPrimaryKey().getId()+" - "+slozka.getStringValue(Structure.Exemplar.napis, context));
-                    sb.append("\"").append(slozka.getPrimaryKey().getId()).append("\"").append(",");
-                    sb.append("\"").append(slozka.getStringValue(Structure.Exemplar.napis, context)).append("\",");
-                    sb.append("\"").append(slozka.getStringValue(Structure.Exemplar.signatura, context)).append("\",");
-                    sb.append("\"").append(slozka.getStringValue(Structure.Exemplar.sys, context)).append("\",");
-                    sb.append("\"").append(slozka.getStringValue(Structure.Exemplar.druh, context)).append("\",");
-                    sb.append("\"").append(slozka.getStringValue(Structure.Exemplar.prijmeni, context)).append("\",");
-                    sb.append("\"").append(slozka.getStringValue(Structure.Exemplar.instituce, context)).append("\",");
-                    sb.append("\"").append(slozka.getStringValue(Structure.Exemplar.obecne, context)).append("\",");
-                    sb.append("\"").append(slozka.getStringValue(Structure.Exemplar.mesto, context)).append("\"").append("\r\n");
+                    sb.append("\"").append(slozka.getPrimaryKey().getId()).append("\"").append(";");
+                    sb.append("\"").append(slozka.getStringValue(Structure.Exemplar.napis, context).replaceAll("\"","'")).append("\";");
+                    sb.append("\"").append(slozka.getStringValue(Structure.Exemplar.signatura, context).replaceAll("\"","'")).append("\";");
+                    sb.append("\"").append(slozka.getStringValue(Structure.Exemplar.sys, context).replaceAll("\"","'")).append("\";");
+                    sb.append("\"").append(slozka.getStringValue(Structure.Exemplar.druh, context).replaceAll("\"","'")).append("\";");
+                    sb.append("\"").append(slozka.getStringValue(Structure.Exemplar.prijmeni, context).replaceAll("\"","'")).append("\";");
+                    sb.append("\"").append(slozka.getStringValue(Structure.Exemplar.instituce, context).replaceAll("\"","'")).append("\";");
+                    sb.append("\"").append(slozka.getStringValue(Structure.Exemplar.obecne, context).replaceAll("\"","'")).append("\";");
+                    sb.append("\"").append(slozka.getStringValue(Structure.Exemplar.mesto, context).replaceAll("\"","'")).append("\"").append("\r\n");
 
 
                 }
                 logger.info("FINISHED READING RECORDS");
 
                 Tempstore ts = TempstoreFactory.getTempstore();
-                String fileTempID = ts.store(wizardParameters.getValue(func.filename), new ByteArrayInputStream(sb.toString().getBytes("UTF-8")), false);
+                String fileTempID = ts.storeString(wizardParameters.getValue(func.filename), sb.toString(),"UTF-8");
                 HttpServletRequest req = context.getHttpServletRequest();
                 String baseUrl = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort() + req.getContextPath()
                         + "/export?fileId=" + fileTempID;
