@@ -40,7 +40,20 @@ public class DLists extends Entity {
         }
         return listProvider;
     }
-    
+
+
+    private static final String LIST_VLASTNIK = "listVlastnik";
+
+    static public EntityListProvider listVlastnik() {
+        EntityListProvider listProvider = (EntityListProvider)ListRegistry.get().getListProvider(LIST_VLASTNIK);
+        if (listProvider==null) {
+            listProvider = new EntityListProvider(LIST_VLASTNIK, Structure.DLists.vlastnik(), Structure.DLists.value);
+            listProvider.addLanguageProperty("cs", Structure.DLists.cz);
+            listProvider.addLanguageProperty("en", Structure.DLists.en);
+        }
+        return listProvider;
+    }
+
     public DLists() {
         super("DLists","DLists", "DLists_ID");
         initFields();
@@ -52,6 +65,7 @@ public class DLists extends Entity {
         public void afterCommit(ContainerNode node, Context ctx) {
             super.afterCommit(node, ctx);
             listDruh().refreshListValues(ctx);
+            listVlastnik().refreshListValues(ctx);
         }
         
         @Override
@@ -77,7 +91,7 @@ public class DLists extends Entity {
     }
     
     public enum DListsType {
-        druh, obecne
+        druh, vlastnik
     }
 
     private View viewDruh;
@@ -88,8 +102,12 @@ public class DLists extends Entity {
         return viewDruh;
     }
 
-    public View obecne() {
-        return inheritanceView(this.view(), classType, DListsType.obecne);
+    private View viewVlastnik;
+    public View vlastnik() {
+        if (viewVlastnik == null) {
+            viewVlastnik = inheritanceView(this.view(), classType, DListsType.vlastnik);
+        }
+        return viewVlastnik;
     }
 
 

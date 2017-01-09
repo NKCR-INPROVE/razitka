@@ -86,7 +86,8 @@ public class ExportCSV extends Function {
                         "\"Osoba\";" +
                         "\"Instituce\";" +
                         "\"Obecné poznámky\";" +
-                        "\"Město\"\r\n");
+                        "\"Město\";"+
+                        "\"Vlastník\"\r\n");
 
                 logger.info("STARTED READING RECORDS ");
                 for (Record slozka : context.getRecords(Structure.Exemplar)
@@ -102,7 +103,8 @@ public class ExportCSV extends Function {
                     sb.append("\"").append(slozka.getStringValue(Structure.Exemplar.prijmeni, context).replaceAll("\"","'")).append("\";");
                     sb.append("\"").append(slozka.getStringValue(Structure.Exemplar.instituce, context).replaceAll("\"","'")).append("\";");
                     sb.append("\"").append(slozka.getStringValue(Structure.Exemplar.obecne, context).replaceAll("\"","'")).append("\";");
-                    sb.append("\"").append(slozka.getStringValue(Structure.Exemplar.mesto, context).replaceAll("\"","'")).append("\"").append("\r\n");
+                    sb.append("\"").append(slozka.getStringValue(Structure.Exemplar.mesto, context).replaceAll("\"","'")).append("\";");
+                    sb.append("\"").append(slozka.getStringValue(Structure.Exemplar.vlastnik, context).replaceAll("\"","'")).append("\"").append("\r\n");
 
 
                 }

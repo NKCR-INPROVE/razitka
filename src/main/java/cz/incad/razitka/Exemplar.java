@@ -30,6 +30,7 @@ public class Exemplar extends Entity {
     public Property<String> instituce;
     public Property<String> obecne;
     public Property<String> mesto;
+    public Property<String> vlastnik;
 
     public Exemplar() {
         super("Exemplar", "Exemplar", "Exemplar_ID");
@@ -41,18 +42,19 @@ public class Exemplar extends Entity {
         sys = textProperty("sys");
         napis = stringProperty("napis");
         obrazek = binaryProperty("obrazek");
-        druh = stringProperty("druh").setListProvider(Structure.DLists.listDruh());;
+        druh = stringProperty("druh").setListProvider(Structure.DLists.listDruh());
         prijmeni = stringProperty("prijmeni");
         instituce = stringProperty("instituce");
         obecne = stringProperty("obecne");
         mesto = stringProperty("mesto");
+        vlastnik = stringProperty("vlastnik").setListProvider(Structure.DLists.listVlastnik());
         setPersistersTriggers(new ExemplarTriggers());
     }
     
     @Override
     protected View initDefaultView() {
         View retval = new View(this).setListPanelWidth(2).setPageSize(20);
-        retval.addProperty(napis).addProperty(sys).addProperty(signatura).addProperty(druh).addProperty(prijmeni).addProperty(instituce).addProperty(obecne).addProperty(mesto);
+        retval.addProperty(napis).addProperty(sys).addProperty(signatura).addProperty(druh).addProperty(prijmeni).addProperty(instituce).addProperty(obecne).addProperty(mesto).addProperty(vlastnik);
 
         retval.addFunction(new ExportCSV());
         //retval.addFunction(new Function("ImportRazitek2", "ImportRazitek2", new ImportRazitek()));
@@ -67,7 +69,7 @@ public class Exemplar extends Entity {
                                 )).setSize(4)
                 ),
                 row(druh, prijmeni, instituce),
-                row(obecne, mesto)
+                row(obecne, mesto, vlastnik)
                 ));
         retval.setForm(form);
         return retval;
