@@ -7,38 +7,36 @@ buildscript {
     }
 }
 
+allprojects {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
 
-apply plugin: 'java'
+    apply plugin: 'java'
+    sourceCompatibility = '1.7'
+    targetCompatibility = '1.7'
+
+}
+
+subprojects{
+    apply plugin: 'gwt'
+}
+
+
+
+
 apply plugin: 'war'
-apply plugin: 'gwt'
 
-sourceCompatibility = '1.7'
-targetCompatibility = '1.7'
 
 configurations {
     capsule
     capsuleMaven
 }
 
-repositories {
-    mavenLocal()
-    mavenCentral()
-}
 
-gwt {
-    gwtVersion='2.7.0'
-    modules 'cz.incad.razitka.Razitka'
-
-    minHeapSize = "512M";
-    maxHeapSize = "1024M";
-
-    superDev {
-        noPrecompile=true
-    }
-}
 
 dependencies {
-    gwt "org.aplikator:aplikator:0.5-SNAPSHOT"
 
     runtime "org.postgresql:postgresql:9.3-1101-jdbc41"
     compile "org.apache.poi:poi:3.14"
@@ -54,6 +52,7 @@ dependencies {
 }
 
 war {
+    from project(':razitka-client').tasks.compileGwt.outputs
     from(configurations.capsule.collect { zipTree(it) })
     from configurations.capsuleMaven
 
@@ -74,5 +73,5 @@ war {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '3.2.1'
+    gradleVersion = '3.5'
 }
