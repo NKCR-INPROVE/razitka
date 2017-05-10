@@ -1,12 +1,12 @@
 gwt {
-    gwtVersion='2.7.0'
+    gwtVersion = '2.7.0'
     modules 'cz.incad.razitka.Razitka'
 
     minHeapSize = "512M";
     maxHeapSize = "1024M";
 
     superDev {
-        noPrecompile=true
+        noPrecompile = true
     }
 }
 
@@ -14,6 +14,6 @@ gwt {
 dependencies {
     gwt "org.aplikator:aplikator:0.5-SNAPSHOT"
     compile "org.aplikator:aplikator:0.5-SNAPSHOT"
-    
-    }
+
+}
 

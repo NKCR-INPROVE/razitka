@@ -19,7 +19,7 @@ allprojects {
 
 }
 
-subprojects{
+subprojects {
     apply plugin: 'gwt'
 }
 
@@ -53,7 +53,7 @@ dependencies {
 
 war {
     from project(':razitka-client').tasks.compileGwt.outputs
-    from(configurations.capsule.collect { zipTree(it) })
+    from(configurations.capsule.collect {zipTree(it)})
     from configurations.capsuleMaven
 
     duplicatesStrategy 'exclude'
@@ -61,13 +61,13 @@ war {
 
     manifest {
         attributes(
-                'Main-Class'                : 'Capsule',
-                'Premain-Class'             : 'Capsule',
-                'Caplets'                   : 'co.paralleluniverse:capsule-maven:1.0',
-                'Application'               : 'com.github.jsimone:webapp-runner:8.0.33.1',
-                'Allow-Snapshots'           : 'true',
-                'Min-Java-Version'          : '1.7.0',
-                'Args'                      : '--path /razitka $CAPSULE_JAR'
+                'Main-Class': 'Capsule',
+                'Premain-Class': 'Capsule',
+                'Caplets': 'co.paralleluniverse:capsule-maven:1.0',
+                'Application': 'com.github.jsimone:webapp-runner:8.0.33.1',
+                'Allow-Snapshots': 'true',
+                'Min-Java-Version': '1.7.0',
+                'Args': '--path /razitka $CAPSULE_JAR'
         )
     }
 }

@@ -36,7 +36,7 @@ public class ImportTest {
 
             //get list of pictures
             List<XSSFPictureData> allPictures = workbook.getAllPictures();
-            System.out.println("allPictures:"+allPictures.size());
+            System.out.println("allPictures:" + allPictures.size());
 
             //Iterate through each rows one by one
             Iterator<Row> rowIterator = sheet.iterator();
@@ -45,7 +45,8 @@ public class ImportTest {
                 Row row = rowIterator.next();
                 rowNo++;
                 //if (rowNo >200) break;
-                if (rowNo == -1) continue;
+                if (rowNo == -1)
+                    continue;
                 //For each row, iterate through all the columns
                 Iterator<Cell> cellIterator = row.cellIterator();
 
@@ -55,11 +56,11 @@ public class ImportTest {
                     //Check the cell type and format accordingly
                     switch (cell.getColumnIndex()) {
                         case 0:  //SIGNATURA
-                            String signatura = cell.getStringCellValue().replaceAll(";\\s*","\n").trim();
+                            String signatura = cell.getStringCellValue().replaceAll(";\\s*", "\n").trim();
                             //System.out.print(cell.getColumnIndex()+":"+signatura);
                             break;
                         case 1: //SYS
-                            String sys = cell.getStringCellValue().replaceAll(";\\s*","\n").trim();
+                            String sys = cell.getStringCellValue().replaceAll(";\\s*", "\n").trim();
                             //System.out.print(cell.getColumnIndex()+":"+sys);
                             break;
                         case 2: //NAPIS
@@ -69,32 +70,32 @@ public class ImportTest {
 
                         case 3: //OBRAZEK
                             String obr = cell.getStringCellValue();
-                            System.out.print(cell.getColumnIndex()+":"+obr);
+                            System.out.print(cell.getColumnIndex() + ":" + obr);
                             break;
                         case 4: //DRUH
-                            String druh = cell.getStringCellValue().replaceAll(";","").trim();
+                            String druh = cell.getStringCellValue().replaceAll(";", "").trim();
                             //System.out.print(cell.getColumnIndex()+":"+druh);
                             break;
                         case 5: //PRIJMENI
-                            String prijmeni = cell.getStringCellValue().replaceAll(";","").trim();
+                            String prijmeni = cell.getStringCellValue().replaceAll(";", "").trim();
                             //System.out.print(cell.getColumnIndex()+":"+prijmeni);
                             break;
                         case 6: //INSTIRUCE
-                            String instituce = cell.getStringCellValue().replaceAll(";","").trim();
+                            String instituce = cell.getStringCellValue().replaceAll(";", "").trim();
                             //System.out.print(cell.getColumnIndex()+":"+instituce);
                             break;
                         case 7: //OBECNE
-                            String obecne = cell.getStringCellValue().replaceAll(";","").trim();
+                            String obecne = cell.getStringCellValue().replaceAll(";", "").trim();
                             //System.out.print(cell.getColumnIndex()+":"+obecne);
                             break;
                         case 8: //MESTO
-                            String mesto = cell.getStringCellValue().replaceAll(";","").trim();
+                            String mesto = cell.getStringCellValue().replaceAll(";", "").trim();
                             //System.out.print(cell.getColumnIndex()+":"+mesto);
                             break;
                     }
                 }
-                System.out.println("picture:"+rowNo);
-                XSSFPictureData pict =  allPictures.get(rowNo);
+                System.out.println("picture:" + rowNo);
+                XSSFPictureData pict = allPictures.get(rowNo);
                 String ext = pict.suggestFileExtension();
                 byte[] data = pict.getData();
                 if (ext.equals("jpeg")) {
@@ -102,17 +103,18 @@ public class ImportTest {
                     out.write(data);
                     out.close();
                 }
-                if (rowNo == allPictures.size()-1) break;
+                if (rowNo == allPictures.size() - 1)
+                    break;
 
             }
-            System.out.println("KONEC:"+rowNo);
+            System.out.println("KONEC:" + rowNo);
             file.close();
         } catch (Exception e) {
             System.out.println(e);
         }
     }
 
-    private static class CellInfo{
+    private static class CellInfo {
         public Integer imageIndex;
         public Integer row1;
         public Integer row2;
@@ -132,7 +134,7 @@ public class ImportTest {
 
             List<CellInfo> problematic = new ArrayList<CellInfo>();
             int i = 0;
-            System.out.println("Shapes: "+drawing.getShapes().size());
+            System.out.println("Shapes: " + drawing.getShapes().size());
             for (XSSFShape shape : drawing.getShapes()) {
                 XSSFClientAnchor anchor = (XSSFClientAnchor) shape.getAnchor();
 
@@ -140,55 +142,55 @@ public class ImportTest {
                 cellInfo.imageIndex = i;
                 cellInfo.row1 = anchor.getRow1();
                 cellInfo.row2 = anchor.getRow2();
-                if (cellInfo.row1.equals(cellInfo.row2)){
-                    if(rowsToIndexes.containsKey(cellInfo.row1)){
-                        System.out.println("Duplicate correct cell info "+cellInfo.row1);
-                    } else{
+                if (cellInfo.row1.equals(cellInfo.row2)) {
+                    if (rowsToIndexes.containsKey(cellInfo.row1)) {
+                        System.out.println("Duplicate correct cell info " + cellInfo.row1);
+                    } else {
                         rowsToIndexes.put(cellInfo.row1, cellInfo.imageIndex);
                     }
-                }else{
+                } else {
                     problematic.add(cellInfo);
-                    System.out.println("Problematic: "+cellInfo.row1+ " "+ cellInfo.row2);
+                    System.out.println("Problematic: " + cellInfo.row1 + " " + cellInfo.row2);
                 }
                 i++;
             }
             for (CellInfo cellInfo : problematic) {
-                if(rowsToIndexes.containsKey(cellInfo.row1)){
+                if (rowsToIndexes.containsKey(cellInfo.row1)) {
                     Integer existing = rowsToIndexes.put(cellInfo.row2, cellInfo.imageIndex);
-                    if (existing != null){
-                        System.out.println("Duplicate upper cell info "+cellInfo.row2);
+                    if (existing != null) {
+                        System.out.println("Duplicate upper cell info " + cellInfo.row2);
                     }
-                } else if(rowsToIndexes.containsKey(cellInfo.row2)){
+                } else if (rowsToIndexes.containsKey(cellInfo.row2)) {
                     Integer existing = rowsToIndexes.put(cellInfo.row1, cellInfo.imageIndex);
-                    if (existing != null){
-                        System.out.println("Duplicate lower cell info "+cellInfo.row1);
+                    if (existing != null) {
+                        System.out.println("Duplicate lower cell info " + cellInfo.row1);
                     }
                 } else {
-                    System.out.println("Duplicate dual cell info "+cellInfo.row1);
+                    System.out.println("Duplicate dual cell info " + cellInfo.row1);
                 }
             }
 
 
-            System.out.println("Mapped: "+rowsToIndexes.size());
-            System.out.println("First: "+rowsToIndexes.firstKey() + " "+ rowsToIndexes.get(rowsToIndexes.firstKey()));
-            System.out.println("Last: "+rowsToIndexes.lastKey());
+            System.out.println("Mapped: " + rowsToIndexes.size());
+            System.out.println("First: " + rowsToIndexes.firstKey() + " " + rowsToIndexes.get(rowsToIndexes.firstKey()));
+            System.out.println("Last: " + rowsToIndexes.lastKey());
 
 
             List<XSSFPictureData> allPictures = workbook.getAllPictures();
-            System.out.println("ALLPictures: "+allPictures.size());
+            System.out.println("ALLPictures: " + allPictures.size());
 
-            for (int p = 0; p<allPictures.size();p++) {
-                XSSFPictureData pict =  allPictures.get(p);
+            for (int p = 0; p < allPictures.size(); p++) {
+                XSSFPictureData pict = allPictures.get(p);
 
                 String ext = pict.suggestFileExtension();
                 byte[] data = pict.getData();
                 File outFile = null;
                 if (ext.equals("jpeg")) {
-                    outFile = new File("files","pict"+p+".jpg");
+                    outFile = new File("files", "pict" + p + ".jpg");
                 } else if (ext.equals("png")) {
-                    outFile = new File("files","pict"+p+".png");
+                    outFile = new File("files", "pict" + p + ".png");
                 } else {
-                    outFile = new File("files","pict"+p+".emf");
+                    outFile = new File("files", "pict" + p + ".emf");
                 }
                 if (outFile != null) {
                     FileOutputStream out = new FileOutputStream(outFile);

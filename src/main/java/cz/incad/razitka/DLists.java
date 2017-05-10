@@ -32,8 +32,8 @@ public class DLists extends Entity {
     private static final String LIST_DRUH = "listDruh";
 
     static public EntityListProvider listDruh() {
-        EntityListProvider listProvider = (EntityListProvider)ListRegistry.get().getListProvider(LIST_DRUH);
-        if (listProvider==null) {
+        EntityListProvider listProvider = (EntityListProvider) ListRegistry.get().getListProvider(LIST_DRUH);
+        if (listProvider == null) {
             listProvider = new EntityListProvider(LIST_DRUH, Structure.DLists.druh(), Structure.DLists.value);
             listProvider.addLanguageProperty("cs", Structure.DLists.cz);
             listProvider.addLanguageProperty("en", Structure.DLists.en);
@@ -45,8 +45,8 @@ public class DLists extends Entity {
     private static final String LIST_VLASTNIK = "listVlastnik";
 
     static public EntityListProvider listVlastnik() {
-        EntityListProvider listProvider = (EntityListProvider)ListRegistry.get().getListProvider(LIST_VLASTNIK);
-        if (listProvider==null) {
+        EntityListProvider listProvider = (EntityListProvider) ListRegistry.get().getListProvider(LIST_VLASTNIK);
+        if (listProvider == null) {
             listProvider = new EntityListProvider(LIST_VLASTNIK, Structure.DLists.vlastnik(), Structure.DLists.value);
             listProvider.addLanguageProperty("cs", Structure.DLists.cz);
             listProvider.addLanguageProperty("en", Structure.DLists.en);
@@ -55,25 +55,25 @@ public class DLists extends Entity {
     }
 
     public DLists() {
-        super("DLists","DLists", "DLists_ID");
+        super("DLists", "DLists", "DLists_ID");
         initFields();
         this.setPersistersTriggers(new DlistTriggers());
     }
-    
-    class DlistTriggers extends PersisterTriggers.Default {        
+
+    class DlistTriggers extends PersisterTriggers.Default {
         @Override
         public void afterCommit(ContainerNode node, Context ctx) {
             super.afterCommit(node, ctx);
             listDruh().refreshListValues(ctx);
             listVlastnik().refreshListValues(ctx);
         }
-        
+
         @Override
         public void onLoad(Record record, View view, Context ctx) {
-            record.setPreview(record.getValue(cz)+" - "+record.getValue(value));
+            record.setPreview(record.getValue(cz) + " - " + record.getValue(value));
         }
     }
-    
+
     @Override
     protected View initDefaultView() {
         View retval = new View(this);
@@ -85,16 +85,17 @@ public class DLists extends Entity {
                 row(en, de, fr),
                 row(use, poradi),
                 row(new TextArea(poznamka).setRows(3))
-                ));
+        ));
         retval.setForm(form);
         return retval;
     }
-    
+
     public enum DListsType {
         druh, vlastnik
     }
 
     private View viewDruh;
+
     public View druh() {
         if (viewDruh == null) {
             viewDruh = inheritanceView(this.view(), classType, DListsType.druh);
@@ -103,6 +104,7 @@ public class DLists extends Entity {
     }
 
     private View viewVlastnik;
+
     public View vlastnik() {
         if (viewVlastnik == null) {
             viewVlastnik = inheritanceView(this.view(), classType, DListsType.vlastnik);

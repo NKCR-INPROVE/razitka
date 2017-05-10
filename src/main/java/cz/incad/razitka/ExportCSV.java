@@ -4,7 +4,6 @@ import static org.aplikator.server.descriptor.Panel.column;
 import static org.aplikator.server.descriptor.Panel.row;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -35,7 +34,6 @@ import cz.incad.razitka.server.Structure;
 public class ExportCSV extends Function {
     private static final String NAME = "ExportCSV";
     Property<String> filename;
-
 
 
     public ExportCSV() {
@@ -77,8 +75,7 @@ public class ExportCSV extends Function {
                 }
 
 
-
-                StringBuilder sb = new StringBuilder("\"ID\";"+
+                StringBuilder sb = new StringBuilder("\"ID\";" +
                         "\"Nápis\";" +
                         "\"Signatura\";" +
                         "\"Sys\";" +
@@ -86,7 +83,7 @@ public class ExportCSV extends Function {
                         "\"Osoba\";" +
                         "\"Instituce\";" +
                         "\"Obecné poznámky\";" +
-                        "\"Město\";"+
+                        "\"Město\";" +
                         "\"Vlastník\"\r\n");
 
                 logger.info("STARTED READING RECORDS ");
@@ -94,24 +91,24 @@ public class ExportCSV extends Function {
                         .withQuery(queryExpression)
                         .withSort(sortItems)
                         .list()) {
-                    logger.info("RECORD:"+slozka.getPrimaryKey().getId()+" - "+slozka.getStringValue(Structure.Exemplar.napis, context));
+                    logger.info("RECORD:" + slozka.getPrimaryKey().getId() + " - " + slozka.getStringValue(Structure.Exemplar.napis, context));
                     sb.append("\"").append(slozka.getPrimaryKey().getId()).append("\"").append(";");
-                    sb.append("\"").append(slozka.getStringValue(Structure.Exemplar.napis, context).replaceAll("\"","'")).append("\";");
-                    sb.append("\"").append(slozka.getStringValue(Structure.Exemplar.signatura, context).replaceAll("\"","'")).append("\";");
-                    sb.append("\"").append(slozka.getStringValue(Structure.Exemplar.sys, context).replaceAll("\"","'")).append("\";");
-                    sb.append("\"").append(slozka.getStringValue(Structure.Exemplar.druh, context).replaceAll("\"","'")).append("\";");
-                    sb.append("\"").append(slozka.getStringValue(Structure.Exemplar.prijmeni, context).replaceAll("\"","'")).append("\";");
-                    sb.append("\"").append(slozka.getStringValue(Structure.Exemplar.instituce, context).replaceAll("\"","'")).append("\";");
-                    sb.append("\"").append(slozka.getStringValue(Structure.Exemplar.obecne, context).replaceAll("\"","'")).append("\";");
-                    sb.append("\"").append(slozka.getStringValue(Structure.Exemplar.mesto, context).replaceAll("\"","'")).append("\";");
-                    sb.append("\"").append(slozka.getStringValue(Structure.Exemplar.vlastnik, context).replaceAll("\"","'")).append("\"").append("\r\n");
+                    sb.append("\"").append(slozka.getStringValue(Structure.Exemplar.napis, context).replaceAll("\"", "'")).append("\";");
+                    sb.append("\"").append(slozka.getStringValue(Structure.Exemplar.signatura, context).replaceAll("\"", "'")).append("\";");
+                    sb.append("\"").append(slozka.getStringValue(Structure.Exemplar.sys, context).replaceAll("\"", "'")).append("\";");
+                    sb.append("\"").append(slozka.getStringValue(Structure.Exemplar.druh, context).replaceAll("\"", "'")).append("\";");
+                    sb.append("\"").append(slozka.getStringValue(Structure.Exemplar.prijmeni, context).replaceAll("\"", "'")).append("\";");
+                    sb.append("\"").append(slozka.getStringValue(Structure.Exemplar.instituce, context).replaceAll("\"", "'")).append("\";");
+                    sb.append("\"").append(slozka.getStringValue(Structure.Exemplar.obecne, context).replaceAll("\"", "'")).append("\";");
+                    sb.append("\"").append(slozka.getStringValue(Structure.Exemplar.mesto, context).replaceAll("\"", "'")).append("\";");
+                    sb.append("\"").append(slozka.getStringValue(Structure.Exemplar.vlastnik, context).replaceAll("\"", "'")).append("\"").append("\r\n");
 
 
                 }
                 logger.info("FINISHED READING RECORDS");
 
                 Tempstore ts = TempstoreFactory.getTempstore();
-                String fileTempID = ts.storeString(wizardParameters.getValue(func.filename), sb.toString(),"UTF-8");
+                String fileTempID = ts.storeString(wizardParameters.getValue(func.filename), sb.toString(), "UTF-8");
                 HttpServletRequest req = context.getHttpServletRequest();
                 String baseUrl = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort() + req.getContextPath()
                         + "/export?fileId=" + fileTempID;

@@ -33,22 +33,21 @@ public class ImportRazitek extends Executable {
     Logger logger = Logger.getLogger(ImportRazitek.class.getName());
 
 
-
     @Override
     public FunctionResult execute(Record currentRecord, Record wizardParameters, ClientContext clientContext, Context context) {
         Config config = Configurator.get().getConfig();
         String importFolder = config.getString("razitka.importFolder");
-        logger.info("STARTED IMPORT: "+importFolder);
+        logger.info("STARTED IMPORT: " + importFolder);
         File importList = new File(importFolder);
         for (File file : importList.listFiles(new FilenameFilter() {
             public boolean accept(File dir, String name) {
-                if (name != null && name.toLowerCase().endsWith(".xlsx")){
+                if (name != null && name.toLowerCase().endsWith(".xlsx")) {
                     return true;
                 }
                 return false;
             }
         })) {
-            logger.info("PROCESSING EXCEL FILE: "+file.getName());
+            logger.info("PROCESSING EXCEL FILE: " + file.getName());
             InputStream theFile = null;
             try {
                 // open the zip file stream
@@ -61,7 +60,6 @@ public class ImportRazitek extends Executable {
                 XSSFSheet sheet = workbook.getSheetAt(0);
 
 
-
                 Tempstore ts = TempstoreFactory.getTempstore();
 
                 //Iterate through each rows one by one
@@ -71,10 +69,11 @@ public class ImportRazitek extends Executable {
                     Row row = rowIterator.next();
                     rowNo++;
                     //if (rowNo >200) break;
-                    if (rowNo == -1) continue;
+                    if (rowNo == -1)
+                        continue;
 
                     Record kniha = RecordUtils.newRecord(Structure.Exemplar);
-                    String fileUI= null;
+                    String fileUI = null;
 
                     //For each row, iterate through all the columns
                     Iterator<Cell> cellIterator = row.cellIterator();
@@ -85,11 +84,11 @@ public class ImportRazitek extends Executable {
                         //Check the cell type and format accordingly
                         switch (cell.getColumnIndex()) {
                             case 0:  //SIGNATURA
-                                String signatura = cell.getStringCellValue().replaceAll(";\\s*","\n").trim();
+                                String signatura = cell.getStringCellValue().replaceAll(";\\s*", "\n").trim();
                                 kniha.setValue(Structure.Exemplar.signatura, signatura);
                                 break;
                             case 1: //SYS
-                                String sys = cell.getStringCellValue().replaceAll(";\\s*","\n").trim();
+                                String sys = cell.getStringCellValue().replaceAll(";\\s*", "\n").trim();
                                 kniha.setValue(Structure.Exemplar.sys, sys);
                                 break;
                             case 2: //UI
@@ -100,45 +99,45 @@ public class ImportRazitek extends Executable {
                                 kniha.setValue(Structure.Exemplar.napis, napis);
                                 break;
                             case 5: //DRUH
-                                String druh = cell.getStringCellValue().replaceAll(";","").trim();
+                                String druh = cell.getStringCellValue().replaceAll(";", "").trim();
                                 kniha.setValue(Structure.Exemplar.druh, druh);
                                 break;
                             case 6: //PRIJMENI
-                                String prijmeni = cell.getStringCellValue().replaceAll(";","").trim();
+                                String prijmeni = cell.getStringCellValue().replaceAll(";", "").trim();
                                 kniha.setValue(Structure.Exemplar.prijmeni, prijmeni);
                                 break;
                             case 7: //INSTIRUCE
-                                String instituce = cell.getStringCellValue().replaceAll(";","").trim();
+                                String instituce = cell.getStringCellValue().replaceAll(";", "").trim();
                                 kniha.setValue(Structure.Exemplar.instituce, instituce);
                                 break;
                             case 8: //OBECNE
-                                String obecne = cell.getStringCellValue().replaceAll(";","").trim();
+                                String obecne = cell.getStringCellValue().replaceAll(";", "").trim();
                                 kniha.setValue(Structure.Exemplar.obecne, obecne);
                                 break;
                             case 9: //MESTO
-                                String mesto = cell.getStringCellValue().replaceAll(";","").trim();
+                                String mesto = cell.getStringCellValue().replaceAll(";", "").trim();
                                 kniha.setValue(Structure.Exemplar.mesto, mesto);
                                 break;
                         }
                     }
-                    System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!FILE:"+fileUI);
+                    System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!FILE:" + fileUI);
                     if (fileUI != null && !"".equals(fileUI)) {
                         final String fileprefix = fileUI;
                         File[] pictures = importList.listFiles(new FilenameFilter() {
                             public boolean accept(File dir, String name) {
-                                if (name != null && name.toLowerCase().startsWith(fileprefix)){
+                                if (name != null && name.toLowerCase().startsWith(fileprefix)) {
                                     return true;
                                 }
                                 return false;
                             }
                         });
-                        if (pictures.length==1) {
+                        if (pictures.length == 1) {
                             InputStream pictStream = new FileInputStream(pictures[0]);
                             String fileTempID = ts.store(pictures[0].getName(), pictStream, false);
-                            kniha.setValue(Structure.Exemplar.obrazek, new BinaryData(Structure.Exemplar.obrazek, pictures[0].getName(),ts.load(fileTempID),ts.getFileLength(fileTempID),fileTempID));
+                            kniha.setValue(Structure.Exemplar.obrazek, new BinaryData(Structure.Exemplar.obrazek, pictures[0].getName(), ts.load(fileTempID), ts.getFileLength(fileTempID), fileTempID));
                             pictStream.close();
                         }
-                    }else{
+                    } else {
                         continue;
                     }
                     context.addNewRecordToContainer(kniha);
@@ -146,12 +145,11 @@ public class ImportRazitek extends Executable {
                     // if (rowNo == allPictures.size()-1) break;
 
                 }
-                logger.info("KONEC:"+(rowNo+1));
-
+                logger.info("KONEC:" + (rowNo + 1));
 
 
             } catch (Throwable th) {
-                logger.log(Level.SEVERE,"ERROR IMPORTING XLSX FILE: "+file.getName(),th);
+                logger.log(Level.SEVERE, "ERROR IMPORTING XLSX FILE: " + file.getName(), th);
                 //return new FunctionResult("Chyba importu:"+th.getMessage(), false);
             } finally {
                 // we must always close the zip file.
@@ -160,15 +158,15 @@ public class ImportRazitek extends Executable {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                logger.info("FINISHED EXCEL FILE: "+file.getName());
+                logger.info("FINISHED EXCEL FILE: " + file.getName());
             }
         }
-        logger.info("FINISHED IMPORT: "+importFolder);
+        logger.info("FINISHED IMPORT: " + importFolder);
         return new FunctionResult("Importovano", true);
 
     }
 
-    private String convertTypKnihy(String prefix){
+    private String convertTypKnihy(String prefix) {
         return "";
     }
 

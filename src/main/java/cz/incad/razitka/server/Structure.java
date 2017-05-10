@@ -1,21 +1,13 @@
 package cz.incad.razitka.server;
 
-import javax.servlet.ServletException;
-import java.util.Map;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.aplikator.client.shared.descriptor.Access;
-import org.aplikator.client.shared.descriptor.ApplicationDTO;
-import org.aplikator.server.Configurator;
-import org.aplikator.server.data.Context;
 import org.aplikator.server.descriptor.AccessControl;
 import org.aplikator.server.descriptor.Application;
 import org.aplikator.server.descriptor.Function;
 import org.aplikator.server.descriptor.Menu;
-
-import com.typesafe.config.ConfigValue;
 
 import cz.incad.razitka.DLists;
 import cz.incad.razitka.Exemplar;
@@ -45,12 +37,12 @@ public class Structure extends Application {
 */
 
     @Override
-    public void initialize()  {
+    public void initialize() {
         try {
             LOG.info("Razitka Loader started");
             Exemplar.setAccessControl(AccessControl.Default.authenticatedFullAccess());
             DLists.setAccessControl(AccessControl.Default.authenticated(Access.NONE).role("admin", Access.READ_WRITE_CREATE_DELETE));
-            setDefaultAction("list/"+Exemplar.view().getId());
+            setDefaultAction("list/" + Exemplar.view().getId());
             Menu menuAgendy = new Menu("agendy");
             menuAgendy.addView(Structure.Exemplar.view());
 
