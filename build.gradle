@@ -14,8 +14,8 @@ allprojects {
     }
 
     apply plugin: 'java'
-    sourceCompatibility = '1.7'
-    targetCompatibility = '1.7'
+    sourceCompatibility = '1.8'
+    targetCompatibility = '1.8'
 
 }
 
@@ -66,7 +66,7 @@ war {
                 'Caplets': 'co.paralleluniverse:capsule-maven:1.0',
                 'Application': 'com.github.jsimone:webapp-runner:8.0.33.1',
                 'Allow-Snapshots': 'true',
-                'Min-Java-Version': '1.7.0',
+                'Min-Java-Version': '1.8.0',
                 'Args': '--path /razitka $CAPSULE_JAR'
         )
     }

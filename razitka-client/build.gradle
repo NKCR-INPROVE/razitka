@@ -1,5 +1,5 @@
 gwt {
-    gwtVersion = '2.7.0'
+    gwtVersion = '2.8.1'
     modules 'cz.incad.razitka.Razitka'
 
     minHeapSize = "512M";
