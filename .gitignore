@@ -6,9 +6,11 @@
 .errai
 
 # build
-/target
-/war
-/build
+**/target
+**/war
+**/build
+
+pict.jpg
 
 # Eclipse
 .classpath
@@ -29,6 +31,5 @@
 
 
 # Package Files #
-*.jar
 *.war
 *.ear
