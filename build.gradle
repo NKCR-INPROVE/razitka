@@ -12,66 +12,30 @@ allprojects {
         mavenLocal()
         mavenCentral()
     }
-
     apply plugin: 'java'
-    sourceCompatibility = '1.8'
-    targetCompatibility = '1.8'
-
+    compileJava   {
+        options.encoding = 'UTF-8'
+        sourceCompatibility = "1.8"
+        targetCompatibility = "1.8"
+    }
 }
 
 subprojects {
     apply plugin: 'gwt'
 }
 
-
-
-
 apply plugin: 'war'
 
-
-configurations {
-    capsule
-    capsuleMaven
-}
-
-
-
 dependencies {
+    compile "org.aplikator:aplikator:0.5-SNAPSHOT"
+    providedCompile 'javax.servlet:javax.servlet-api:3.1.0'
 
     runtime "org.postgresql:postgresql:9.3-1101-jdbc41"
     compile "org.apache.poi:poi:3.14"
     compile "org.apache.poi:poi-ooxml:3.14"
     compile "commons-codec:commons-codec:1.10"
-
-    compile "org.aplikator:aplikator:0.5-SNAPSHOT"
-
-    providedCompile 'javax.servlet:javax.servlet-api:3.1.0'
-
-    capsule 'co.paralleluniverse:capsule:1.0.3'
-    capsuleMaven 'co.paralleluniverse:capsule-maven:1.0'
 }
 
 war {
     from project(':razitka-client').tasks.compileGwt.outputs
-    from(configurations.capsule.collect {zipTree(it)})
-    from configurations.capsuleMaven
-
-    duplicatesStrategy 'exclude'
-
-
-    manifest {
-        attributes(
-                'Main-Class': 'Capsule',
-                'Premain-Class': 'Capsule',
-                'Caplets': 'co.paralleluniverse:capsule-maven:1.0',
-                'Application': 'com.github.jsimone:webapp-runner:8.0.33.1',
-                'Allow-Snapshots': 'true',
-                'Min-Java-Version': '1.8.0',
-                'Args': '--path /razitka $CAPSULE_JAR'
-        )
-    }
-}
-
-task wrapper(type: Wrapper) {
-    gradleVersion = '3.5'
 }
