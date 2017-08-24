@@ -16,6 +16,8 @@ import org.aplikator.server.descriptor.Property;
 import org.aplikator.server.descriptor.TextArea;
 import org.aplikator.server.descriptor.View;
 
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+
 import cz.incad.razitka.server.Structure;
 
 public class Exemplar extends Entity {
@@ -92,7 +94,10 @@ public class Exemplar extends Entity {
 
         @Override
         public void onLoad(Record record, View view, Context ctx) {
-            record.setPreview("<B>" + record.getStringValue(sys, ctx).split("\n")[0] + "</B><br> " + record.getStringValue(napis, ctx));
+            record.setPreview(new SafeHtmlBuilder()
+                    .appendHtmlConstant("<B>").appendEscaped(record.getStringValue(sys, ctx).split("\n")[0])
+                    .appendHtmlConstant("</B><br> ").appendEscaped(record.getStringValue(napis, ctx))
+                    .toSafeHtml());
         }
     }
 

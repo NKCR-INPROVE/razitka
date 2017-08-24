@@ -16,9 +16,13 @@ import org.aplikator.server.descriptor.SortItem;
 import org.aplikator.server.descriptor.TextArea;
 import org.aplikator.server.descriptor.View;
 
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+
 import cz.incad.razitka.server.Structure;
 
 public class DLists extends Entity {
+    private static final String LIST_DRUH = "listDruh";
+    private static final String LIST_VLASTNIK = "listVlastnik";
     public Property<String> classType;
     public Property<String> value;
     public Property<String> cz;
@@ -28,8 +32,14 @@ public class DLists extends Entity {
     public Property<Boolean> use;
     public Property<Integer> poradi;
     public Property<String> poznamka;
+    private View viewDruh;
+    private View viewVlastnik;
 
-    private static final String LIST_DRUH = "listDruh";
+    public DLists() {
+        super("DLists", "DLists", "DLists_ID");
+        initFields();
+        this.setPersistersTriggers(new DlistTriggers());
+    }
 
     static public EntityListProvider listDruh() {
         EntityListProvider listProvider = (EntityListProvider) ListRegistry.get().getListProvider(LIST_DRUH);
@@ -41,9 +51,6 @@ public class DLists extends Entity {
         return listProvider;
     }
 
-
-    private static final String LIST_VLASTNIK = "listVlastnik";
-
     static public EntityListProvider listVlastnik() {
         EntityListProvider listProvider = (EntityListProvider) ListRegistry.get().getListProvider(LIST_VLASTNIK);
         if (listProvider == null) {
@@ -52,26 +59,6 @@ public class DLists extends Entity {
             listProvider.addLanguageProperty("en", Structure.DLists.en);
         }
         return listProvider;
-    }
-
-    public DLists() {
-        super("DLists", "DLists", "DLists_ID");
-        initFields();
-        this.setPersistersTriggers(new DlistTriggers());
-    }
-
-    class DlistTriggers extends PersisterTriggers.Default {
-        @Override
-        public void afterCommit(ContainerNode node, Context ctx) {
-            super.afterCommit(node, ctx);
-            listDruh().refreshListValues(ctx);
-            listVlastnik().refreshListValues(ctx);
-        }
-
-        @Override
-        public void onLoad(Record record, View view, Context ctx) {
-            record.setPreview(record.getValue(cz) + " - " + record.getValue(value));
-        }
     }
 
     @Override
@@ -90,12 +77,6 @@ public class DLists extends Entity {
         return retval;
     }
 
-    public enum DListsType {
-        druh, vlastnik
-    }
-
-    private View viewDruh;
-
     public View druh() {
         if (viewDruh == null) {
             viewDruh = inheritanceView(this.view(), classType, DListsType.druh);
@@ -103,15 +84,12 @@ public class DLists extends Entity {
         return viewDruh;
     }
 
-    private View viewVlastnik;
-
     public View vlastnik() {
         if (viewVlastnik == null) {
             viewVlastnik = inheritanceView(this.view(), classType, DListsType.vlastnik);
         }
         return viewVlastnik;
     }
-
 
     public void initFields() {
         classType = stringProperty("classType");
@@ -123,5 +101,25 @@ public class DLists extends Entity {
         use = booleanProperty("use");
         poradi = integerProperty("poradi");
         poznamka = stringProperty("poznamka");
+    }
+
+    public enum DListsType {
+        druh, vlastnik
+    }
+
+    class DlistTriggers extends PersisterTriggers.Default {
+        @Override
+        public void afterCommit(ContainerNode node, Context ctx) {
+            super.afterCommit(node, ctx);
+            listDruh().refreshListValues(ctx);
+            listVlastnik().refreshListValues(ctx);
+        }
+
+        @Override
+        public void onLoad(Record record, View view, Context ctx) {
+            record.setPreview(new SafeHtmlBuilder()
+                    .appendEscaped(record.getValue(cz)).appendHtmlConstant(" - ").appendEscaped(record.getValue(value))
+                    .toSafeHtml());
+        }
     }
 }
