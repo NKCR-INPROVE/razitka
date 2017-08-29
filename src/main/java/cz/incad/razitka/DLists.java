@@ -21,8 +21,6 @@ import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import cz.incad.razitka.server.Structure;
 
 public class DLists extends Entity {
-    private static final String LIST_DRUH = "listDruh";
-    private static final String LIST_VLASTNIK = "listVlastnik";
     public Property<String> classType;
     public Property<String> value;
     public Property<String> cz;
@@ -42,9 +40,9 @@ public class DLists extends Entity {
     }
 
     static public EntityListProvider listDruh() {
-        EntityListProvider listProvider = (EntityListProvider) ListRegistry.get().getListProvider(LIST_DRUH);
+        EntityListProvider listProvider = (EntityListProvider) ListRegistry.get().getListProvider(DListsType.druh.name());
         if (listProvider == null) {
-            listProvider = new EntityListProvider(LIST_DRUH, Structure.DLists.druh(), Structure.DLists.value);
+            listProvider = new EntityListProvider(DListsType.druh, Structure.DLists.druh(), Structure.DLists.value);
             listProvider.addLanguageProperty("cs", Structure.DLists.cz);
             listProvider.addLanguageProperty("en", Structure.DLists.en);
         }
@@ -52,9 +50,9 @@ public class DLists extends Entity {
     }
 
     static public EntityListProvider listVlastnik() {
-        EntityListProvider listProvider = (EntityListProvider) ListRegistry.get().getListProvider(LIST_VLASTNIK);
+        EntityListProvider listProvider = (EntityListProvider) ListRegistry.get().getListProvider(DListsType.vlastnik.name());
         if (listProvider == null) {
-            listProvider = new EntityListProvider(LIST_VLASTNIK, Structure.DLists.vlastnik(), Structure.DLists.value);
+            listProvider = new EntityListProvider(DListsType.vlastnik, Structure.DLists.vlastnik(), Structure.DLists.value);
             listProvider.addLanguageProperty("cs", Structure.DLists.cz);
             listProvider.addLanguageProperty("en", Structure.DLists.en);
         }
