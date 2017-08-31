@@ -77,14 +77,14 @@ public class DLists extends Entity {
 
     public View druh() {
         if (viewDruh == null) {
-            viewDruh = inheritanceView(this.view(), classType, DListsType.druh);
+            viewDruh = inheritanceView(this.view(), classType, DListsType.druh.name());
         }
         return viewDruh;
     }
 
     public View vlastnik() {
         if (viewVlastnik == null) {
-            viewVlastnik = inheritanceView(this.view(), classType, DListsType.vlastnik);
+            viewVlastnik = inheritanceView(this.view(), classType, DListsType.vlastnik.name());
         }
         return viewVlastnik;
     }
