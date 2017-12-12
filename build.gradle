@@ -30,7 +30,7 @@ dependencies {
     compile "org.aplikator:aplikator:0.5-SNAPSHOT"
     providedCompile 'javax.servlet:javax.servlet-api:3.1.0'
 
-    runtime "org.postgresql:postgresql:9.3-1101-jdbc41"
+    runtime "org.postgresql:postgresql:42.1.4"
     compile "org.apache.poi:poi:3.14"
     compile "org.apache.poi:poi-ooxml:3.14"
     compile "commons-codec:commons-codec:1.10"
