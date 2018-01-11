@@ -67,7 +67,7 @@ public class ExportCSV extends Function {
                 for (QueryParameterDTO queryParameterDTO : queryDescriptor.getQueryParameters()) {
                     queryParameters.add(new QueryParameter(queryParameterDTO));
                 }
-                QueryExpression queryExpression = view.getQueryDescriptor(activeFilter).getQueryExpression(queryParameters, context);
+                QueryExpression queryExpression = view.getQueryDescriptor(activeFilter, context).getQueryExpression(queryParameters, context);
                 SortItem[] sortItems = null;
                 if (activeSort != null && !activeSort.equals("")) {
                     SortDescriptor sortDescriptor = view.getSortDescriptor(activeSort);
