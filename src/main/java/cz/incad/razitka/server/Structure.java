@@ -49,6 +49,7 @@ public class Structure extends Application {
             Menu menuAdministrace = new Menu("administrace");
             menuAdministrace.addView(Structure.DLists.druh());
             menuAdministrace.addView(Structure.DLists.vlastnik());
+            menuAdministrace.addView(Structure.DLists.jazyk());
             Function importFunction = new Function("ImportRazitek", "ImportRazitek", new ImportRazitek());
             importFunction.setAccessControl(AccessControl.Default.authenticated(Access.NONE).role("admin", Access.READ_WRITE_CREATE_DELETE));
             menuAdministrace.addFunction(importFunction);

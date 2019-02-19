@@ -32,6 +32,7 @@ public class DLists extends Entity {
     public Property<String> poznamka;
     private View viewDruh;
     private View viewVlastnik;
+    private View viewJazyk;
 
     public DLists() {
         super("DLists", "DLists", "DLists_ID");
@@ -49,12 +50,24 @@ public class DLists extends Entity {
         return listProvider;
     }
 
+
+    static public EntityListProvider listJazyk() {
+        EntityListProvider listProvider = (EntityListProvider) ListRegistry.get().getListProvider(DListsType.jazyk.name());
+        if (listProvider == null) {
+            listProvider = new EntityListProvider(DListsType.jazyk, Structure.DLists.jazyk(), Structure.DLists.value);
+            listProvider.addLanguageProperty("cs", Structure.DLists.cz);
+            listProvider.addLanguageProperty("en", Structure.DLists.en);
+        }
+        return listProvider;
+    }
+
     static public EntityListProvider listVlastnik() {
         EntityListProvider listProvider = (EntityListProvider) ListRegistry.get().getListProvider(DListsType.vlastnik.name());
         if (listProvider == null) {
             listProvider = new EntityListProvider(DListsType.vlastnik, Structure.DLists.vlastnik(), Structure.DLists.value);
             listProvider.addLanguageProperty("cs", Structure.DLists.cz);
             listProvider.addLanguageProperty("en", Structure.DLists.en);
+            listProvider.sortByName();
         }
         return listProvider;
     }
@@ -89,6 +102,13 @@ public class DLists extends Entity {
         return viewVlastnik;
     }
 
+    public View jazyk() {
+        if (viewJazyk == null) {
+            viewJazyk = inheritanceView(this.view(), classType, DListsType.jazyk.name());
+        }
+        return viewJazyk;
+    }
+
     public void initFields() {
         classType = stringProperty("classType");
         value = stringProperty("value");
@@ -102,7 +122,7 @@ public class DLists extends Entity {
     }
 
     public enum DListsType {
-        druh, vlastnik
+        druh, vlastnik, jazyk
     }
 
     class DlistTriggers extends PersisterTriggers.Default {
@@ -111,6 +131,7 @@ public class DLists extends Entity {
             super.afterCommit(node, ctx);
             listDruh().refreshListValues(ctx);
             listVlastnik().refreshListValues(ctx);
+            listJazyk().refreshListValues(ctx);
         }
 
         @Override
