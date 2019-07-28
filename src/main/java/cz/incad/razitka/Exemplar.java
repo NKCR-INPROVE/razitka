@@ -8,13 +8,7 @@ import org.aplikator.server.data.ContainerNode;
 import org.aplikator.server.data.Context;
 import org.aplikator.server.data.PersisterTriggers;
 import org.aplikator.server.data.Record;
-import org.aplikator.server.descriptor.BinaryField;
-import org.aplikator.server.descriptor.BinaryProperty;
-import org.aplikator.server.descriptor.Entity;
-import org.aplikator.server.descriptor.Form;
-import org.aplikator.server.descriptor.Property;
-import org.aplikator.server.descriptor.TextArea;
-import org.aplikator.server.descriptor.View;
+import org.aplikator.server.descriptor.*;
 
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 
@@ -25,6 +19,7 @@ public class Exemplar extends Entity {
     public Property<String> sys;
     public Property<String> napis;
     public BinaryProperty obrazek;
+    public BinaryProperty obrazek2;
     public Property<String> druh;
     public Property<String> prijmeni;
     public Property<String> instituce;
@@ -32,6 +27,7 @@ public class Exemplar extends Entity {
     public Property<String> mesto;
     public Property<String> vlastnik;
     public Property<String> jazyk;
+    public Collection<Kniha> kniha;
 
     public Exemplar() {
         super("Exemplar", "Exemplar", "Exemplar_ID");
@@ -43,6 +39,7 @@ public class Exemplar extends Entity {
         sys = textProperty("sys");
         napis = stringProperty("napis");
         obrazek = binaryProperty("obrazek");
+        obrazek2 = binaryProperty("obrazek2");
         druh = stringProperty("druh").setListProvider(Structure.DLists.listDruh());
         prijmeni = stringProperty("prijmeni");
         instituce = stringProperty("instituce");
@@ -65,11 +62,13 @@ public class Exemplar extends Entity {
         form.setLayout(column(
                 row(napis),
                 row(
-                        column(new BinaryField(obrazek).setHeight(400).useThumbnail(false)).setSize(8),
+                        column(new BinaryField(obrazek).setHeight(400).useThumbnail(false)).setSize(4),
+                        column(new BinaryField(obrazek2).setHeight(400).useThumbnail(false)).setSize(4),
                         column(row(new TextArea(signatura).setRows(21).setSize(6),
                                 new TextArea(sys).setRows(21).setSize(6)
                         )).setSize(4)
                 ),
+                row(RepeatedForm.repeated(kniha)),
                 row(druh, prijmeni, instituce),
                 row(obecne, mesto, vlastnik, jazyk)
         ));
