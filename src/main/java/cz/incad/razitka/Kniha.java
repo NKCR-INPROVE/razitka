@@ -3,6 +3,7 @@ package cz.incad.razitka;
 
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import cz.incad.razitka.server.Structure;
+import org.aplikator.server.Configurator;
 import org.aplikator.server.data.ContainerNode;
 import org.aplikator.server.data.Context;
 import org.aplikator.server.data.PersisterTriggers;
@@ -15,6 +16,7 @@ import static org.aplikator.server.descriptor.Panel.row;
 public class Kniha extends Entity {
     public Property<String> signatura;
     public Property<String> sys;
+    public Property<String> link;
 
     public Kniha() {
         super("Kniha", "Kniha", "Kniha_ID");
@@ -24,6 +26,7 @@ public class Kniha extends Entity {
     public void initFields() {
         signatura = stringProperty("signatura");
         sys = stringProperty("sys");
+        link = virtualStringProperty("link");
         setPersistersTriggers(new KnihaTriggers());
     }
 
@@ -34,7 +37,7 @@ public class Kniha extends Entity {
 
         Form form = new Form(false);
         form.setLayout(
-                row(signatura, sys)
+                row(signatura, sys, new HtmlField(link))
                 );
         retval.setForm(form);
         return retval;
@@ -60,6 +63,10 @@ public class Kniha extends Entity {
         @Override
         public void onLoad(Record record, View view, Context ctx) {
             super.onLoad(record, view, ctx);
+            record.setValue(link,new SafeHtmlBuilder()
+                    .appendHtmlConstant("<a href=\"https://aleph.nkp.cz/F/?func=direct&doc_number=").appendEscaped(record.getStringValue(sys, ctx))
+                    .appendHtmlConstant("&local_base=NKC\"  target=\"_blank\">").appendEscaped(Configurator.get().getLocalizedString("link.text", ctx.getUserLocale())).appendHtmlConstant("</a>")
+                    .toSafeHtml().asString());
         }
     }
 

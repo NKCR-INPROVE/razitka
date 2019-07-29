@@ -3,16 +3,12 @@ package cz.incad.razitka.server;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import cz.incad.razitka.Kniha;
+import cz.incad.razitka.*;
 import org.aplikator.client.shared.descriptor.Access;
-import org.aplikator.server.descriptor.AccessControl;
-import org.aplikator.server.descriptor.Application;
-import org.aplikator.server.descriptor.Function;
-import org.aplikator.server.descriptor.Menu;
+import org.aplikator.client.shared.descriptor.ApplicationDTO;
+import org.aplikator.server.data.Context;
+import org.aplikator.server.descriptor.*;
 
-import cz.incad.razitka.DLists;
-import cz.incad.razitka.Exemplar;
-import cz.incad.razitka.ImportRazitek;
 import org.aplikator.server.security.Accounts;
 
 
@@ -27,28 +23,39 @@ public class Structure extends Application {
     static {
         Exemplar.kniha = Exemplar.collectionProperty(Kniha, "Exemplar", "Exemplar_ID");
     }
-/*
+
+    private Action adminViewAction = new Action(Exemplar.adminView().getId(), Exemplar.adminView().getLocalizationKey(), "list/" + Exemplar.adminView().getId());
+    private Action guestViewAction = new Action(Exemplar.guestView().getId(), Exemplar.guestView().getLocalizationKey(), "list/" + Exemplar.guestView().getId());
     @Override
     public ApplicationDTO getApplicationDTO(Context ctx) {
         ApplicationDTO retval = super.getApplicationDTO(ctx);
-
-        if (!ctx.getHttpServletRequest().isUserInRole("admin")){
+        if (!ctx.isAuthenticated()){
             retval.setShowNavigation(false);
+            retval.setDefaultAction("list/" + Exemplar.guestView().getId());
         }else{
             retval.setShowNavigation(true);
+            if (ctx.isUserInRole("admin")){
+                retval.getMenus().get(0).getActions().clear();
+                retval.getMenus().get(0).getActions().add(adminViewAction.getActionDTO(ctx));
+                retval.setDefaultAction("list/" + Exemplar.adminView().getId());
+            } else {
+                retval.setDefaultAction("list/" + Exemplar.view().getId());
+            }
         }
         return retval;
     }
-*/
+
 
     @Override
     public void initialize() {
         try {
             LOG.info("Razitka Loader started");
-            Exemplar.setAccessControl(AccessControl.Default.authenticatedFullAccess()); //.guest(Access.READ));
+            Exemplar.setAccessControl(AccessControl.Default.authenticatedFullAccess().guest(Access.READ));
+            Kniha.setAccessControl(AccessControl.Default.authenticatedFullAccess().guest(Access.READ));
             DLists.setAccessControl(AccessControl.Default.authenticated(Access.NONE).role("superuser", Access.READ_WRITE_CREATE_DELETE).role("admin", Access.READ_WRITE_CREATE_DELETE));
             Accounts.setAccessControl(AccessControl.Default.authenticated(Access.NONE).role("admin", Access.READ_WRITE_CREATE_DELETE));
-            setDefaultAction("list/" + Exemplar.view().getId());
+            setAccountsEntity(Accounts);
+            //setDefaultAction("list/" + Exemplar.view().getId());
             Menu menuAgendy = new Menu("agendy");
             menuAgendy.addView(Structure.Exemplar.view());
 
@@ -60,6 +67,9 @@ public class Structure extends Application {
             Function importFunction = new Function("ImportRazitek", "ImportRazitek", new ImportRazitek());
             importFunction.setAccessControl(AccessControl.Default.authenticated(Access.NONE).role("admin", Access.READ_WRITE_CREATE_DELETE));
             menuAdministrace.addFunction(importFunction);
+            Function convertFunction = new Function("KonverzeSignatur", "KonverzeSignatur", new KonverzeSignatur());
+            convertFunction.setAccessControl(AccessControl.Default.authenticated(Access.NONE).role("admin", Access.READ_WRITE_CREATE_DELETE));
+            menuAdministrace.addFunction(convertFunction);
 
             addMenu(menuAgendy).addMenu(menuAdministrace);
             LOG.info("Razitka Loader finished");

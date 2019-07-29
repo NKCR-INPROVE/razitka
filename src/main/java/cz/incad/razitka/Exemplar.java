@@ -50,23 +50,22 @@ public class Exemplar extends Entity {
         setPersistersTriggers(new ExemplarTriggers());
     }
 
+    private Function exportCSV = new ExportCSV();
+
     @Override
     protected View initDefaultView() {
         View retval = new View(this).setListPanelWidth(2).setPageSize(20);
         retval.addProperty(napis).addProperty(sys).addProperty(signatura).addProperty(druh).addProperty(prijmeni).addProperty(instituce).addProperty(obecne).addProperty(mesto).addProperty(vlastnik).addProperty(jazyk);
 
-        retval.addFunction(new ExportCSV());
+        retval.addFunction(exportCSV);
         //retval.addFunction(new Function("ImportRazitek2", "ImportRazitek2", new ImportRazitek()));
 
         Form form = new Form(false);
         form.setLayout(column(
                 row(napis),
                 row(
-                        column(new BinaryField(obrazek).setHeight(400).useThumbnail(false)).setSize(4),
-                        column(new BinaryField(obrazek2).setHeight(400).useThumbnail(false)).setSize(4),
-                        column(row(new TextArea(signatura).setRows(21).setSize(6),
-                                new TextArea(sys).setRows(21).setSize(6)
-                        )).setSize(4)
+                        column(new BinaryField(obrazek).setHeight(400).useThumbnail(false)).setSize(6),
+                        column(new BinaryField(obrazek2).setHeight(400).useThumbnail(false)).setSize(6)
                 ),
                 row(RepeatedForm.repeated(kniha)),
                 row(druh, prijmeni, instituce),
@@ -76,6 +75,57 @@ public class Exemplar extends Entity {
         return retval;
     }
 
+    private View adminView;
+    public View adminView() {
+        if (adminView == null) {
+            View retval = new View(this, "admin").setListPanelWidth(2).setPageSize(20);
+            retval.addProperty(napis).addProperty(sys).addProperty(signatura).addProperty(druh).addProperty(prijmeni).addProperty(instituce).addProperty(obecne).addProperty(mesto).addProperty(vlastnik).addProperty(jazyk);
+
+            retval.addFunction(exportCSV);
+            //retval.addFunction(new Function("ImportRazitek2", "ImportRazitek2", new ImportRazitek()));
+
+            Form form = new Form(false);
+            form.setLayout(column(
+                    row(napis),
+                    row(
+                            column(new BinaryField(obrazek).setHeight(400).useThumbnail(false)).setSize(4),
+                            column(new BinaryField(obrazek2).setHeight(400).useThumbnail(false)).setSize(4),
+                            column(row(new TextArea(signatura).setRows(21).setSize(6),
+                                    new TextArea(sys).setRows(21).setSize(6)
+                            )).setSize(4)
+                    ),
+                    row(RepeatedForm.repeated(kniha)),
+                    row(druh, prijmeni, instituce),
+                    row(obecne, mesto, vlastnik, jazyk)
+            ));
+            retval.setForm(form);
+            adminView = retval;
+        }
+        return adminView;
+    }
+
+
+    private View guestView;
+    public View guestView() {
+        if (guestView == null) {
+            View retval = new View(this, "guest").setListPanelWidth(2).setPageSize(20);
+
+            retval.addProperty(napis).addProperty(sys).addProperty(signatura).addProperty(druh).addProperty(prijmeni).addProperty(instituce).addProperty(obecne).addProperty(mesto).addProperty(vlastnik).addProperty(jazyk);
+
+            Form form = new Form(false);
+            form.setLayout(column(
+                    row(napis.widget().setEnabled(false)),
+                    row(
+                            column(new BinaryField(obrazek).setHeight(400).useThumbnail(false)).setSize(6).setEnabled(false),
+                            column(new BinaryField(obrazek2).setHeight(400).useThumbnail(false)).setSize(6).setEnabled(false)
+                    ),
+                    row(RepeatedForm.repeated(kniha).setEnabled(false))
+            ));
+            retval.setForm(form);
+            guestView = retval;
+        }
+        return guestView;
+    }
 
     private class ExemplarTriggers extends PersisterTriggers.Default {
         @Override
