@@ -67,7 +67,7 @@ public class Structure extends Application {
             Function importFunction = new Function("ImportRazitek", "ImportRazitek", new ImportRazitek());
             importFunction.setAccessControl(AccessControl.Default.authenticated(Access.NONE).role("admin", Access.READ_WRITE_CREATE_DELETE));
             menuAdministrace.addFunction(importFunction);
-            Function convertFunction = new Function("KonverzeSignatur", "KonverzeSignatur", new KonverzeSignatur());
+            Function convertFunction = new Function("AktualizaceLabelu", "AktualizaceLabelu", new AktualizaceLabelu());
             convertFunction.setAccessControl(AccessControl.Default.authenticated(Access.NONE).role("admin", Access.READ_WRITE_CREATE_DELETE));
             menuAdministrace.addFunction(convertFunction);
 

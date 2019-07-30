@@ -30,3 +30,9 @@ CREATE TABLE Accounts (
 CREATE UNIQUE INDEX principal_IDX ON Accounts (principal);
 
 ALTER TABLE Kniha ADD CONSTRAINT Kniha_Exemplar_ID_FK FOREIGN KEY (Exemplar_ID) REFERENCES Exemplar (Exemplar_ID);
+
+//dasli update
+
+ALTER TABLE Exemplar ADD label VARCHAR(255);
+ALTER TABLE Exemplar ADD hidden BOOLEAN;
+update exemplar set hidden = false;
