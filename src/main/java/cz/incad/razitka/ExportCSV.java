@@ -6,6 +6,7 @@ import static org.aplikator.server.descriptor.Panel.row;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.aplikator.client.shared.data.ClientContext;
@@ -17,13 +18,7 @@ import org.aplikator.server.DescriptorRegistry;
 import org.aplikator.server.data.Context;
 import org.aplikator.server.data.Executable;
 import org.aplikator.server.data.Record;
-import org.aplikator.server.descriptor.Function;
-import org.aplikator.server.descriptor.Property;
-import org.aplikator.server.descriptor.QueryParameter;
-import org.aplikator.server.descriptor.SortDescriptor;
-import org.aplikator.server.descriptor.SortItem;
-import org.aplikator.server.descriptor.View;
-import org.aplikator.server.descriptor.WizardPage;
+import org.aplikator.server.descriptor.*;
 import org.aplikator.server.persistence.tempstore.Tempstore;
 import org.aplikator.server.persistence.tempstore.TempstoreFactory;
 import org.aplikator.server.query.QueryExpression;
@@ -40,6 +35,7 @@ public class ExportCSV extends Function {
         super(NAME, NAME, new Executor());
         WizardPage p1 = new WizardPage(this, "firstPage");
         filename = p1.stringProperty("filename");
+        filename.setAccessControl(AccessControl.Default.authenticatedFullAccess());
         p1.form(row(
                 column(filename)
         ), false);
@@ -114,7 +110,7 @@ public class ExportCSV extends Function {
                         + "/export?fileId=" + fileTempID;
                 return new FunctionResult(baseUrl, true, FunctionResultType.DOWNLOAD);
             } catch (Throwable t) {
-
+                logger.log(Level.SEVERE, "Export do CSV nebyl spuštěn", t);
                 return new FunctionResult("Export do CSV nebyl spuštěn: " + t, false);
             }
 
