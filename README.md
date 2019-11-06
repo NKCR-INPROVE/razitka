@@ -1,4 +1,4 @@
-# Razitka NLP 
+# Databaze provenienčních znaků 
 
 Databáze slouží jako nástroj pro evidenci provenienčních znaků obsažených ve zpracovaných jednotkách deponovaných v Rezervních fondech NK ČR. 
 Základní evidenční jednotkou (=1 záznam) je unikátní provenienční znak, kterým je nejčastěji razítko či exlibris původního vlastníka knihy. Ke každému jedinečnému záznamu jsou evidovány všechny doposud zpracované jednotky z RF NK ČR, které znak obsahují. 
