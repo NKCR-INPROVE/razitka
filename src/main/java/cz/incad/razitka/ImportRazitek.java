@@ -14,6 +14,7 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.aplikator.client.shared.data.ClientContext;
 import org.aplikator.client.shared.data.FunctionResult;
+import org.aplikator.client.shared.data.FunctionResultStatus;
 import org.aplikator.server.Configurator;
 import org.aplikator.server.data.BinaryData;
 import org.aplikator.server.data.Context;
@@ -162,7 +163,7 @@ public class ImportRazitek extends Executable {
             }
         }
         logger.info("FINISHED IMPORT: " + importFolder);
-        return new FunctionResult("Importovano", true);
+        return new FunctionResult("Importovano", FunctionResultStatus.SUCCESS);
 
     }
 

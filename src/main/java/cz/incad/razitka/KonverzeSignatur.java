@@ -3,6 +3,7 @@ package cz.incad.razitka;
 import cz.incad.razitka.server.Structure;
 import org.aplikator.client.shared.data.ClientContext;
 import org.aplikator.client.shared.data.FunctionResult;
+import org.aplikator.client.shared.data.FunctionResultStatus;
 import org.aplikator.client.shared.descriptor.QueryDescriptorDTO;
 import org.aplikator.server.data.Context;
 import org.aplikator.server.data.Executable;
@@ -45,10 +46,10 @@ public class KonverzeSignatur extends Executable {
             }
             logger.info("FINISHED READING RECORDS");
 
-            return new FunctionResult("Konvertovano", true);
+            return new FunctionResult("Konvertovano", FunctionResultStatus.SUCCESS);
         } catch (Throwable t) {
 
-            return new FunctionResult("Konverze signatur nebyla spuštěna: " + t, false);
+            return new FunctionResult("Konverze signatur nebyla spuštěna: " + t, FunctionResultStatus.ERROR);
         }
 
     }

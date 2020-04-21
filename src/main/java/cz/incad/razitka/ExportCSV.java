@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 
 import org.aplikator.client.shared.data.ClientContext;
 import org.aplikator.client.shared.data.FunctionResult;
+import org.aplikator.client.shared.data.FunctionResultStatus;
 import org.aplikator.client.shared.data.FunctionResultType;
 import org.aplikator.client.shared.descriptor.QueryDescriptorDTO;
 import org.aplikator.client.shared.descriptor.QueryParameterDTO;
@@ -108,10 +109,10 @@ public class ExportCSV extends Function {
                 HttpServletRequest req = context.getHttpServletRequest();
                 String baseUrl = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort() + req.getContextPath()
                         + "/export?fileId=" + fileTempID;
-                return new FunctionResult(baseUrl, true, FunctionResultType.DOWNLOAD);
+                return new FunctionResult(baseUrl, FunctionResultStatus.SUCCESS, FunctionResultType.DOWNLOAD);
             } catch (Throwable t) {
                 logger.log(Level.SEVERE, "Export do CSV nebyl spuštěn", t);
-                return new FunctionResult("Export do CSV nebyl spuštěn: " + t, false);
+                return new FunctionResult("Export do CSV nebyl spuštěn: " + t, FunctionResultStatus.ERROR);
             }
 
         }

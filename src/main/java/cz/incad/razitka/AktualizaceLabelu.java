@@ -3,6 +3,7 @@ package cz.incad.razitka;
 import cz.incad.razitka.server.Structure;
 import org.aplikator.client.shared.data.ClientContext;
 import org.aplikator.client.shared.data.FunctionResult;
+import org.aplikator.client.shared.data.FunctionResultStatus;
 import org.aplikator.client.shared.descriptor.QueryDescriptorDTO;
 import org.aplikator.server.data.Context;
 import org.aplikator.server.data.Executable;
@@ -39,10 +40,10 @@ public class AktualizaceLabelu extends Executable {
             }
             logger.info("FINISHED READING RECORDS");
 
-            return new FunctionResult("Aktualizovano", true);
+            return new FunctionResult("Aktualizovano", FunctionResultStatus.SUCCESS);
         } catch (Throwable t) {
 
-            return new FunctionResult("Aktualizace labelu nebyla spuštěna: " + t, false);
+            return new FunctionResult("Aktualizace labelu nebyla spuštěna: " + t, FunctionResultStatus.ERROR);
         }
 
     }
