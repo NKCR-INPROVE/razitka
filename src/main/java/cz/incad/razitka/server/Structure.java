@@ -1,15 +1,14 @@
 package cz.incad.razitka.server;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import cz.incad.razitka.*;
 import org.aplikator.client.shared.descriptor.Access;
 import org.aplikator.client.shared.descriptor.ApplicationDTO;
 import org.aplikator.server.data.Context;
 import org.aplikator.server.descriptor.*;
-
 import org.aplikator.server.security.Accounts;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public class Structure extends Application {
@@ -70,6 +69,10 @@ public class Structure extends Application {
             Function convertFunction = new Function("AktualizaceLabelu", "AktualizaceLabelu", new AktualizaceLabelu());
             convertFunction.setAccessControl(AccessControl.Default.authenticated(Access.NONE).role("admin", Access.READ_WRITE_CREATE_DELETE));
             menuAdministrace.addFunction(convertFunction);
+
+//            Function carkodFunction = new Function("KonverzeCarkod", "KonverzeCarkod", new KonverzeCarkod());
+//            carkodFunction.setAccessControl(AccessControl.Default.authenticated(Access.NONE).role("admin", Access.READ_WRITE_CREATE_DELETE));
+//            menuAdministrace.addFunction(carkodFunction);
 
             addMenu(menuAgendy).addMenu(menuAdministrace);
             LOG.info("Razitka Loader finished");
