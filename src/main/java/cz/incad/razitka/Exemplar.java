@@ -1,22 +1,19 @@
 package cz.incad.razitka;
 
 
-import static org.aplikator.server.descriptor.Panel.column;
-import static org.aplikator.server.descriptor.Panel.row;
-
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+import cz.incad.razitka.server.Structure;
 import org.aplikator.server.data.ContainerNode;
 import org.aplikator.server.data.Context;
 import org.aplikator.server.data.PersisterTriggers;
 import org.aplikator.server.data.Record;
 import org.aplikator.server.descriptor.*;
-
-import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
-
-import cz.incad.razitka.server.Structure;
 import org.aplikator.server.query.QueryExpression;
-import org.aplikator.server.query.QueryParameterReference;
 
 import java.util.List;
+
+import static org.aplikator.server.descriptor.Panel.column;
+import static org.aplikator.server.descriptor.Panel.row;
 
 public class Exemplar extends Entity {
     public Property<String> signatura;
@@ -34,6 +31,9 @@ public class Exemplar extends Entity {
     public Property<String> label;
     public Property<Boolean> hidden;
     public Collection<Kniha> kniha;
+    public Collection<Zdroj> zdroj;
+
+    Function souvisejici;
 
     public Exemplar() {
         super("Exemplar", "Exemplar", "Exemplar_ID");
@@ -56,6 +56,10 @@ public class Exemplar extends Entity {
         label = stringProperty("label");
         hidden = booleanProperty("hidden");
         setPersistersTriggers(new ExemplarTriggers());
+
+        souvisejici = new Function("Souvisejici", "Souvisejici", new Souvisejici());
+        //souvisejici.setAccessControl(AccessControl.Default.authenticated(Access.NONE).role("admin", Access.READ_WRITE_CREATE_DELETE));
+
     }
 
     private Function exportCSV = new ExportCSV();
@@ -77,9 +81,11 @@ public class Exemplar extends Entity {
                 ),
                 row(RepeatedForm.repeated(kniha)),
                 row(druh, prijmeni, instituce, hidden),
-                row(obecne, mesto, vlastnik, jazyk)
+                row(obecne, mesto, vlastnik, jazyk),
+                row(RepeatedForm.repeated(zdroj))
         ));
         retval.setForm(form);
+        retval.addFunction(souvisejici);
         return retval;
     }
 
@@ -101,9 +107,11 @@ public class Exemplar extends Entity {
                     ),
                     row(RepeatedForm.repeated(kniha)),
                     row(druh, prijmeni, instituce, hidden),
-                    row(obecne, mesto, vlastnik, jazyk)
+                    row(obecne, mesto, vlastnik, jazyk),
+                    row(RepeatedForm.repeated(zdroj))
             ));
             retval.setForm(form);
+            retval.addFunction(souvisejici);
             adminView = retval;
         }
         return adminView;
@@ -142,7 +150,8 @@ public class Exemplar extends Entity {
                             column(new BinaryField(obrazek).setHeight(400).useThumbnail(false)).setSize(6).setEnabled(false),
                             column(new BinaryField(obrazek2).setHeight(400).useThumbnail(false)).setSize(6).setEnabled(false)
                     ),
-                    row(RepeatedForm.repeated(kniha).setEnabled(false))
+                    row(RepeatedForm.repeated(kniha).setEnabled(false)),
+                    row(RepeatedForm.repeated(zdroj).setEnabled(false))
             ));
             retval.setForm(form);
             guestView = retval;

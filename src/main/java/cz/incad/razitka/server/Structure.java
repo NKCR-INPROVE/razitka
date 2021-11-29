@@ -16,11 +16,13 @@ public class Structure extends Application {
 
     public static final DLists DLists = new DLists();
     public static final cz.incad.razitka.Kniha Kniha = new Kniha();
+    public static final cz.incad.razitka.Zdroj Zdroj = new Zdroj();
     public static final Exemplar Exemplar = new Exemplar();
     public static final org.aplikator.server.security.Accounts Accounts = new Accounts();
 
     static {
         Exemplar.kniha = Exemplar.collectionProperty(Kniha, "Exemplar", "Exemplar_ID");
+        Exemplar.zdroj = Exemplar.collectionProperty(Zdroj, "Zdroj", "Exemplar_ID");
     }
 
     private Action adminViewAction = new Action(Exemplar.adminView().getId(), Exemplar.adminView().getLocalizationKey(), "list/" + Exemplar.adminView().getId());
@@ -70,9 +72,10 @@ public class Structure extends Application {
             convertFunction.setAccessControl(AccessControl.Default.authenticated(Access.NONE).role("admin", Access.READ_WRITE_CREATE_DELETE));
             menuAdministrace.addFunction(convertFunction);
 
-//            Function carkodFunction = new Function("KonverzeCarkod", "KonverzeCarkod", new KonverzeCarkod());
-//            carkodFunction.setAccessControl(AccessControl.Default.authenticated(Access.NONE).role("admin", Access.READ_WRITE_CREATE_DELETE));
-//            menuAdministrace.addFunction(carkodFunction);
+
+            Function update = new Function("KonverzeZdroju", "KonverzeZdroju", new KonverzeZdroju());
+            update.setAccessControl(AccessControl.Default.authenticated(Access.NONE).role("admin", Access.READ_WRITE_CREATE_DELETE));
+            menuAdministrace.addFunction(update);
 
             addMenu(menuAgendy).addMenu(menuAdministrace);
             LOG.info("Razitka Loader finished");
