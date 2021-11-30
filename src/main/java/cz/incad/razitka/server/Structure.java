@@ -73,9 +73,9 @@ public class Structure extends Application {
             menuAdministrace.addFunction(convertFunction);
 
 
-            Function update = new Function("KonverzeZdroju", "KonverzeZdroju", new KonverzeZdroju());
-            update.setAccessControl(AccessControl.Default.authenticated(Access.NONE).role("admin", Access.READ_WRITE_CREATE_DELETE));
-            menuAdministrace.addFunction(update);
+//            Function update = new Function("KonverzeZdroju", "KonverzeZdroju", new KonverzeZdroju());
+//            update.setAccessControl(AccessControl.Default.authenticated(Access.NONE).role("admin", Access.READ_WRITE_CREATE_DELETE));
+//            menuAdministrace.addFunction(update);
 
             addMenu(menuAgendy).addMenu(menuAdministrace);
             LOG.info("Razitka Loader finished");

@@ -77,48 +77,52 @@ public class RelatedServlet extends HttpServlet {
         Context ctx = new Context(req, resp, new AplikatorServiceBackend(), null);
         try {
             out.write("<h1>Související záznamy</h1>\n");
-            out.write("<h2>Příjmení</h2>\n");
-            for (Record slozka : ctx.getRecords(Structure.Exemplar)
-                    .withQuery(Structure.Exemplar.prijmeni.STARTSWITH_IGNORECASE(prijmeni))
-                    .withSort(SortItem.ascending(Structure.Exemplar.prijmeni))
-                    .withSort(SortItem.ascending(Structure.Exemplar.label))
-                    .list()) {
-                root.clear();
-                root.put("baseUrl",baseUrl);
-                root.put("id", slozka.getPrimaryKey().getId());
-                root.put("napis", slozka.getStringValue(Structure.Exemplar.napis, ctx));
-                root.put("label", slozka.getStringValue(Structure.Exemplar.label, ctx));
-                root.put("prijmeni", slozka.getStringValue(Structure.Exemplar.prijmeni, ctx));
-                root.put("instituce", slozka.getStringValue(Structure.Exemplar.instituce, ctx));
-                try {
-                    Environment env = temp.createProcessingEnvironment(root, out);
-                    env.setOutputEncoding(CHAR_ENCODING);
-                    env.process();
-                } catch (TemplateException e) {
-                    LOG.log(Level.SEVERE,"Error in template evaluation", e);
-                    throw new ServletException(e);
+            out.write("<h2>Příjmení: "+prijmeni+"</h2>\n");
+            if (!prijmeni.isEmpty()) {
+                for (Record slozka : ctx.getRecords(Structure.Exemplar)
+                        .withQuery(Structure.Exemplar.prijmeni.STARTSWITH_IGNORECASE(prijmeni))
+                        .withSort(SortItem.ascending(Structure.Exemplar.prijmeni))
+                        .withSort(SortItem.ascending(Structure.Exemplar.label))
+                        .list()) {
+                    root.clear();
+                    root.put("baseUrl", baseUrl);
+                    root.put("id", Integer.toString(slozka.getPrimaryKey().getId()));
+                    root.put("napis", slozka.getStringValue(Structure.Exemplar.napis, ctx));
+                    root.put("label", slozka.getStringValue(Structure.Exemplar.label, ctx));
+                    root.put("prijmeni", slozka.getStringValue(Structure.Exemplar.prijmeni, ctx));
+                    root.put("instituce", slozka.getStringValue(Structure.Exemplar.instituce, ctx));
+                    try {
+                        Environment env = temp.createProcessingEnvironment(root, out);
+                        env.setOutputEncoding(CHAR_ENCODING);
+                        env.process();
+                    } catch (TemplateException e) {
+                        LOG.log(Level.SEVERE, "Error in template evaluation", e);
+                        throw new ServletException(e);
+                    }
                 }
             }
-            out.write("<h2>Instituce</h2>\n");
-            for (Record slozka : ctx.getRecords(Structure.Exemplar)
-                    .withQuery(Structure.Exemplar.instituce.STARTSWITH_IGNORECASE(instituce))
-                    .withSort(SortItem.ascending(Structure.Exemplar.instituce))
-                    .withSort(SortItem.ascending(Structure.Exemplar.label))
-                    .list()) {
-                root.clear();
-                root.put("baseUrl",baseUrl);
-                root.put("id", slozka.getPrimaryKey().getId());
-                root.put("napis", slozka.getStringValue(Structure.Exemplar.napis, ctx));
-                root.put("label", slozka.getStringValue(Structure.Exemplar.label, ctx));
-                root.put("prijmeni", slozka.getStringValue(Structure.Exemplar.prijmeni, ctx));
-                root.put("instituce", slozka.getStringValue(Structure.Exemplar.instituce, ctx));
-                try {
-                    Environment env = temp.createProcessingEnvironment(root, out);
-                    env.setOutputEncoding(CHAR_ENCODING);
-                    env.process();
-                } catch (TemplateException e) {
-                    LOG.log(Level.SEVERE,"Error in template evaluation", e);
-                    throw new ServletException(e);
+            out.write("<h2>Instituce: "+instituce+"</h2>\n");
+            if (!instituce.isEmpty()) {
+                for (Record slozka : ctx.getRecords(Structure.Exemplar)
+                        .withQuery(Structure.Exemplar.instituce.STARTSWITH_IGNORECASE(instituce))
+                        .withSort(SortItem.ascending(Structure.Exemplar.instituce))
+                        .withSort(SortItem.ascending(Structure.Exemplar.label))
+                        .list()) {
+                    root.clear();
+                    root.put("baseUrl", baseUrl);
+                    root.put("id", Integer.toString(slozka.getPrimaryKey().getId()));
+                    root.put("napis", slozka.getStringValue(Structure.Exemplar.napis, ctx));
+                    root.put("label", slozka.getStringValue(Structure.Exemplar.label, ctx));
+                    root.put("prijmeni", slozka.getStringValue(Structure.Exemplar.prijmeni, ctx));
+                    root.put("instituce", slozka.getStringValue(Structure.Exemplar.instituce, ctx));
+                    try {
+                        Environment env = temp.createProcessingEnvironment(root, out);
+                        env.setOutputEncoding(CHAR_ENCODING);
+                        env.process();
+                    } catch (TemplateException e) {
+                        LOG.log(Level.SEVERE, "Error in template evaluation", e);
+                        throw new ServletException(e);
+                    }
                 }
             }
             out.write(
