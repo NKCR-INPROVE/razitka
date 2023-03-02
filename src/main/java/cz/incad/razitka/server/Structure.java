@@ -65,12 +65,12 @@ public class Structure extends Application {
             menuAdministrace.addView(Structure.DLists.vlastnik());
             menuAdministrace.addView(Structure.DLists.jazyk());
             menuAdministrace.addView(Structure.Accounts.view());
-            Function importFunction = new Function("ImportRazitek", "ImportRazitek", new ImportRazitek());
-            importFunction.setAccessControl(AccessControl.Default.authenticated(Access.NONE).role("admin", Access.READ_WRITE_CREATE_DELETE));
-            menuAdministrace.addFunction(importFunction);
-            Function convertFunction = new Function("AktualizaceLabelu", "AktualizaceLabelu", new AktualizaceLabelu());
-            convertFunction.setAccessControl(AccessControl.Default.authenticated(Access.NONE).role("admin", Access.READ_WRITE_CREATE_DELETE));
-            menuAdministrace.addFunction(convertFunction);
+//            Function importFunction = new Function("ImportRazitek", "ImportRazitek", new ImportRazitek());
+//            importFunction.setAccessControl(AccessControl.Default.authenticated(Access.NONE).role("admin", Access.READ_WRITE_CREATE_DELETE));
+//            menuAdministrace.addFunction(importFunction);
+//            Function convertFunction = new Function("AktualizaceLabelu", "AktualizaceLabelu", new AktualizaceLabelu());
+//            convertFunction.setAccessControl(AccessControl.Default.authenticated(Access.NONE).role("admin", Access.READ_WRITE_CREATE_DELETE));
+//            menuAdministrace.addFunction(convertFunction);
 
 
 //            Function update = new Function("KonverzeZdroju", "KonverzeZdroju", new KonverzeZdroju());
