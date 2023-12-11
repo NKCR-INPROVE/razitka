@@ -1,24 +1,16 @@
 package cz.incad.razitka;
 
-import static org.aplikator.server.descriptor.Panel.column;
-import static org.aplikator.server.descriptor.Panel.row;
-
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+import cz.incad.razitka.server.Structure;
 import org.aplikator.server.ListRegistry;
 import org.aplikator.server.data.ContainerNode;
 import org.aplikator.server.data.Context;
 import org.aplikator.server.data.PersisterTriggers;
 import org.aplikator.server.data.Record;
-import org.aplikator.server.descriptor.Entity;
-import org.aplikator.server.descriptor.EntityListProvider;
-import org.aplikator.server.descriptor.Form;
-import org.aplikator.server.descriptor.Property;
-import org.aplikator.server.descriptor.SortItem;
-import org.aplikator.server.descriptor.TextArea;
-import org.aplikator.server.descriptor.View;
+import org.aplikator.server.descriptor.*;
 
-import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
-
-import cz.incad.razitka.server.Structure;
+import static org.aplikator.server.descriptor.Panel.column;
+import static org.aplikator.server.descriptor.Panel.row;
 
 public class DLists extends Entity {
     public Property<String> classType;
@@ -75,8 +67,9 @@ public class DLists extends Entity {
     @Override
     protected View initDefaultView() {
         View retval = new View(this);
-        retval.addProperty(value).addProperty(cz).addProperty(en).addProperty(de).addProperty(fr);
+        retval.addProperty(value).addProperty(cz).addProperty(en).addProperty(de).addProperty(fr).addProperty(use, true, true, false);
         retval.insertFirstSortDescriptor(poradi.getId(), poradi.getLocalizationKey(), SortItem.ascending(poradi));
+        retval.insertQueryDescriptor("useQ","activeListItems", use.EQUAL(true) );
         Form form = new Form(false);
         form.setLayout(column(
                 row(value, cz),

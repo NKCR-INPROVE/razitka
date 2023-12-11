@@ -27,6 +27,9 @@ public class Structure extends Application {
 
     private Action adminViewAction = new Action(Exemplar.adminView().getId(), Exemplar.adminView().getLocalizationKey(), "list/" + Exemplar.adminView().getId());
     private Action guestViewAction = new Action(Exemplar.guestView().getId(), Exemplar.guestView().getLocalizationKey(), "list/" + Exemplar.guestView().getId());
+    private Action help = new Action("napoveda", "help");
+
+
     @Override
     public ApplicationDTO getApplicationDTO(Context ctx) {
         ApplicationDTO retval = super.getApplicationDTO(ctx);
@@ -38,6 +41,7 @@ public class Structure extends Application {
             if (ctx.isUserInRole("admin")){
                 retval.getMenus().get(0).getActions().clear();
                 retval.getMenus().get(0).getActions().add(adminViewAction.getActionDTO(ctx));
+                retval.getMenus().get(0).getActions().add(help.getActionDTO(ctx));
                 retval.setDefaultAction("list/" + Exemplar.adminView().getId());
             } else {
                 retval.setDefaultAction("list/" + Exemplar.view().getId());
@@ -59,6 +63,8 @@ public class Structure extends Application {
             //setDefaultAction("list/" + Exemplar.view().getId());
             Menu menuAgendy = new Menu("agendy");
             menuAgendy.addView(Structure.Exemplar.view());
+            help.setAccessControl(AccessControl.Default.authenticatedFullAccess().guest(Access.NONE));
+            menuAgendy.addAction(help);
 
             Menu menuAdministrace = new Menu("administrace");
             menuAdministrace.addView(Structure.DLists.druh());
@@ -76,6 +82,10 @@ public class Structure extends Application {
 //            Function update = new Function("KonverzeZdroju", "KonverzeZdroju", new KonverzeZdroju());
 //            update.setAccessControl(AccessControl.Default.authenticated(Access.NONE).role("admin", Access.READ_WRITE_CREATE_DELETE));
 //            menuAdministrace.addFunction(update);
+
+//            Function convertFunction = new Function("Aktualizace2023", "Aktualizace2023", new Aktualizace2023());
+//            convertFunction.setAccessControl(AccessControl.Default.authenticated(Access.NONE).role("admin", Access.READ_WRITE_CREATE_DELETE));
+//            menuAdministrace.addFunction(convertFunction);
 
             addMenu(menuAgendy).addMenu(menuAdministrace);
             LOG.info("Razitka Loader finished");

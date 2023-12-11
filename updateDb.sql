@@ -51,3 +51,11 @@ CREATE TABLE Zdroj (
 CREATE INDEX Zdroj_Exemplar_ID_REFIDX ON Zdroj (Exemplar_ID);
 
 ALTER TABLE Zdroj ADD CONSTRAINT Zdroj_Exemplar_ID_FK FOREIGN KEY (Exemplar_ID) REFERENCES Exemplar (Exemplar_ID);
+
+
+//UPDATE 2023
+ALTER TABLE Exemplar ADD velikost VARCHAR(255);
+ALTER TABLE Exemplar ADD napis_ascii VARCHAR(255);
+ALTER TABLE Exemplar ADD prijmeni_ascii VARCHAR(255);
+ALTER TABLE Exemplar ADD instituce_ascii VARCHAR(255);
+ALTER TABLE Exemplar ADD mesto_ascii VARCHAR(255);
