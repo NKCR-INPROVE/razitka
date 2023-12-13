@@ -11,12 +11,11 @@ import org.aplikator.server.descriptor.*;
 import org.aplikator.server.query.QueryExpression;
 import org.aplikator.server.query.QueryParameterReference;
 
-import java.text.Normalizer;
 import java.util.List;
-import java.util.regex.Pattern;
 
 import static org.aplikator.server.descriptor.Panel.column;
 import static org.aplikator.server.descriptor.Panel.row;
+import static org.aplikator.utils.AplikatorUtils.unaccent;
 
 public class Exemplar extends Entity {
     public Property<String> signatura;
@@ -98,8 +97,9 @@ public class Exemplar extends Entity {
                         column(new BinaryField(obrazek2).setHeight(400).useThumbnail(false)).setSize(6)
                 ),
                 row(RepeatedForm.repeated(kniha)),
-                row(druh, prijmeni, instituce, hidden),
-                row(obecne, mesto, vlastnik, jazyk),
+                row(druh, prijmeni, instituce),
+                row(mesto, vlastnik, jazyk),
+                row(obecne, velikost, hidden),
                 row(RepeatedForm.repeated(zdroj))
         ));
         retval.setForm(form);
@@ -140,21 +140,21 @@ public class Exemplar extends Entity {
     private void addCommonProperties(View retval) {
         retval.addProperty(napis, false,false,false);
         retval.addProperty(napis_ascii, true,true,false);
-        retval.addQueryDescriptor("napis_contains", napis_ascii.getLocalizationKey(), napis_ascii.LIKE_IGNORECASE(QueryParameterReference.param(0)), new QueryParameter(napis_ascii));
+        retval.addQueryDescriptor("napis_contains", napis_ascii.getLocalizationKey(), napis_ascii.LIKE_UNACCENT(QueryParameterReference.param(0)), new QueryParameter(napis_ascii));
         retval.addProperty(druh).addProperty(sys, false, false, false);
         retval.addQueryDescriptor("sys_contains", sys.getLocalizationKey(), sys.LIKE_IGNORECASE(QueryParameterReference.param(0)), new QueryParameter(sys));
         retval.addProperty(signatura, false, false, false);
         retval.addQueryDescriptor("signatura_contains", signatura.getLocalizationKey(), signatura.LIKE_IGNORECASE(QueryParameterReference.param(0)), new QueryParameter(signatura));
         retval.addProperty(prijmeni, false,false,false);
         retval.addProperty(prijmeni_ascii,true,true,false);
-        retval.addQueryDescriptor("prijmeni_contains", prijmeni_ascii.getLocalizationKey(), prijmeni_ascii.LIKE_IGNORECASE(QueryParameterReference.param(0)), new QueryParameter(prijmeni_ascii));
+        retval.addQueryDescriptor("prijmeni_contains", prijmeni_ascii.getLocalizationKey(), prijmeni_ascii.LIKE_UNACCENT(QueryParameterReference.param(0)), new QueryParameter(prijmeni_ascii));
         retval.addProperty(instituce, false,false,false);
         retval.addProperty(instituce_ascii,true,true,false);
-        retval.addQueryDescriptor("instituce", instituce_ascii.getLocalizationKey(), instituce_ascii.LIKE_IGNORECASE(QueryParameterReference.param(0)), new QueryParameter(instituce_ascii));
+        retval.addQueryDescriptor("instituce", instituce_ascii.getLocalizationKey(), instituce_ascii.LIKE_UNACCENT(QueryParameterReference.param(0)), new QueryParameter(instituce_ascii));
         retval.addProperty(obecne, false, false, false);
         retval.addProperty(mesto, false,false,false);
         retval.addProperty(mesto_ascii, true,true,false);
-        retval.addQueryDescriptor("mesto_contains", mesto_ascii.getLocalizationKey(), mesto_ascii.LIKE_IGNORECASE(QueryParameterReference.param(0)), new QueryParameter(mesto_ascii));
+        retval.addQueryDescriptor("mesto_contains", mesto_ascii.getLocalizationKey(), mesto_ascii.LIKE_UNACCENT(QueryParameterReference.param(0)), new QueryParameter(mesto_ascii));
         retval.addProperty(vlastnik).addProperty(jazyk).addProperty(label, false, false, false).addProperty(hidden, false, false, false);
     }
 
@@ -183,8 +183,8 @@ public class Exemplar extends Entity {
     public View guestView() {
         if (guestView == null) {
             View retval = new GuestView(this, "guest").setListPanelWidth(2).setPageSize(20);
-
-            retval.addProperty(napis).addProperty(sys).addProperty(signatura).addProperty(druh).addProperty(prijmeni).addProperty(instituce).addProperty(obecne).addProperty(mesto).addProperty(vlastnik).addProperty(jazyk).addProperty(label, false, false, false);
+            addCommonProperties(retval);
+            //retval.addProperty(napis).addProperty(sys).addProperty(signatura).addProperty(druh).addProperty(prijmeni).addProperty(instituce).addProperty(obecne).addProperty(mesto).addProperty(vlastnik).addProperty(jazyk).addProperty(label, false, false, false);
 
             Form form = new Form(false);
             form.setLayout(column(
@@ -264,14 +264,10 @@ public class Exemplar extends Entity {
 
     private void removeDiacriticsIfNotNull(Record exemplar, Property<String> field, Property<String> fieldAscii) {
         if (exemplar.getValue(field) != null) {
-            exemplar.setValue(fieldAscii, removeDiacritics(exemplar.getValue(field)));
+            exemplar.setValue(fieldAscii, unaccent(exemplar.getValue(field)));
         }
     }
 
-    private static String removeDiacritics(String str) {
-        String nfdNormalizedString = Normalizer.normalize(str, Normalizer.Form.NFD);
-        Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
-        return pattern.matcher(nfdNormalizedString).replaceAll("");
-    }
+
 
 }

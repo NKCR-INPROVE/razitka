@@ -20,7 +20,7 @@ public class HelpScreen extends Composite {
 
     protected ViewDTO view;
 
-    final String url = "https://docs.google.com/document/d/1yV5Pw6nnywdI3SFsdqUaTwkluFOKmZDGniCJ4t50Tek/edit";
+    final String url = "https://docs.google.com/document/d/1741BK-9sE-_e-GnrApd_LtdMsYnTbg_Nh6YI98-LUeg/edit?usp=sharing";
 
      final int SCROLL_OFFSET = Aplikator.application.isShowNavigation() ? Aplikator.MAINMENUBAR_HEIGHT  : 0;
      final int scrollHeight =  Window.getClientHeight() - SCROLL_OFFSET - 20;
