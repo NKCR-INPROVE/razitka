@@ -12,8 +12,8 @@ gwt {
 
 
 dependencies {
-    gwt "org.aplikator:aplikator:0.5-SNAPSHOT"
-    compile "org.aplikator:aplikator:0.5-SNAPSHOT"
+    gwt "org.aplikator:aplikator:1.0.0"
+    compile "org.aplikator:aplikator:1.0.0"
 
 }
 
