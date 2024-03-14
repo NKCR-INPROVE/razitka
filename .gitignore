@@ -34,4 +34,4 @@ pict.jpg
 # Package Files #
 *.war
 *.ear
-/ansible/
+**/ansible
