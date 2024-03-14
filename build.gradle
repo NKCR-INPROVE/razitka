@@ -7,6 +7,12 @@ buildscript {
     }
 }
 
+plugins {
+    id 'com.google.cloud.tools.jib' version '3.3.1'
+}
+
+version = '1.0.1'
+
 allprojects {
     repositories {
         mavenLocal()
@@ -27,13 +33,14 @@ subprojects {
     apply plugin: 'gwt'
 }
 
+
 apply plugin: 'war'
 
 dependencies {
     compile "org.aplikator:aplikator:1.0.0"
     providedCompile 'javax.servlet:javax.servlet-api:3.1.0'
 
-    runtime "org.postgresql:postgresql:42.1.4"
+    runtime "org.postgresql:postgresql:42.7.2"
     compile "org.apache.poi:poi:3.14"
     compile "org.apache.poi:poi-ooxml:3.14"
     compile "commons-codec:commons-codec:1.10"
@@ -41,4 +48,31 @@ dependencies {
 
 war {
     from project(':razitka-client').tasks.compileGwt.outputs
+}
+
+jib {
+    from {
+        image = 'bitnami/tomcat:9.0.75'
+        platforms {
+            platform {
+                architecture = 'amd64'
+                os = 'linux'
+            }
+            platform {
+                architecture = 'arm64'
+                os = 'linux'
+            }
+        }
+    }
+    to {
+        image = "ghcr.io/inovatika-cz/razitka:${version}"
+        auth {
+            username = findProperty('githubRepositoryUser') ?: System.getenv('GITHUB_ACTOR')
+            password = findProperty('githubRepositoryToken') ?: System.getenv('GITHUB_TOKEN')
+        }
+    }
+    container {
+        appRoot = '/opt/bitnami/tomcat/webapps/razitka'
+        user = '1001'
+    }
 }
