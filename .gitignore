@@ -35,3 +35,4 @@ pict.jpg
 *.war
 *.ear
 **/ansible
+/TechnickyPopis.pdf
