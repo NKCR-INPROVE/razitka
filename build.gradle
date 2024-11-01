@@ -11,7 +11,7 @@ plugins {
     id 'com.google.cloud.tools.jib' version '3.3.1'
 }
 
-version = '1.0.1'
+version = '1.0.2'
 
 allprojects {
     repositories {
@@ -37,7 +37,7 @@ subprojects {
 apply plugin: 'war'
 
 dependencies {
-    compile "org.aplikator:aplikator:1.0.0"
+    compile "org.aplikator:aplikator:1.0.4"
     providedCompile 'javax.servlet:javax.servlet-api:3.1.0'
 
     runtime "org.postgresql:postgresql:42.7.2"
@@ -48,7 +48,9 @@ dependencies {
 
 war {
     from project(':razitka-client').tasks.compileGwt.outputs
+    archiveName = "razitka.war"
 }
+
 
 jib {
     from {

@@ -9,6 +9,7 @@ import org.aplikator.server.data.PersisterTriggers;
 import org.aplikator.server.data.Record;
 import org.aplikator.server.descriptor.*;
 
+import static org.aplikator.server.descriptor.Panel.column;
 import static org.aplikator.server.descriptor.Panel.row;
 
 public class Kniha extends Entity {
@@ -16,6 +17,7 @@ public class Kniha extends Entity {
     public Property<String> sys;
     public Property<String> carkod;
     public Property<String> link;
+    public Property<String> poznamka;
 
     public Kniha() {
         super("Kniha", "Kniha", "Kniha_ID");
@@ -27,18 +29,20 @@ public class Kniha extends Entity {
         sys = stringProperty("sys");
         carkod = stringProperty("carkod");
         link = virtualStringProperty("link");
+        poznamka = textProperty("poznamka");
         setPersistersTriggers(new KnihaTriggers());
     }
 
     @Override
     protected View initDefaultView() {
         View retval = new View(this).setListPanelWidth(2).setPageSize(20);
-        retval.addProperty(sys).addProperty(signatura).addProperty(carkod);
+        retval.addProperty(signatura).addProperty(sys).addProperty(carkod);
 
         Form form = new Form(false);
-        form.setLayout(
-                row(signatura, sys, carkod, new HtmlField(link))
-                );
+        form.setLayout(column(
+                row(signatura, sys, carkod, new HtmlField(link)),
+                row(poznamka)
+        ));
         retval.setForm(form);
         return retval;
     }

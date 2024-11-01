@@ -59,3 +59,6 @@ ALTER TABLE Exemplar ADD napis_ascii VARCHAR(255);
 ALTER TABLE Exemplar ADD prijmeni_ascii VARCHAR(255);
 ALTER TABLE Exemplar ADD instituce_ascii VARCHAR(255);
 ALTER TABLE Exemplar ADD mesto_ascii VARCHAR(255);
+
+//UPDATE 2024
+ALTER TABLE Kniha ADD poznamka VARCHAR(1024);

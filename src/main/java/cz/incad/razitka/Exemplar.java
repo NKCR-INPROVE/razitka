@@ -96,11 +96,11 @@ public class Exemplar extends Entity {
                         column(new BinaryField(obrazek).setHeight(400).useThumbnail(false)).setSize(6),
                         column(new BinaryField(obrazek2).setHeight(400).useThumbnail(false)).setSize(6)
                 ),
-                row(RepeatedForm.repeated(kniha)),
                 row(druh, prijmeni, instituce),
                 row(mesto, vlastnik, jazyk),
                 row(obecne, velikost, hidden),
-                row(RepeatedForm.repeated(zdroj))
+                row(RepeatedForm.repeated(zdroj)),
+                row(NestedTable.nestedTable(kniha))
         ));
         retval.setForm(form);
         retval.addFunction(souvisejici);
@@ -124,11 +124,12 @@ public class Exemplar extends Entity {
                             column(new BinaryField(obrazek).setHeight(400).useThumbnail(false)).setSize(6),
                             column(new BinaryField(obrazek2).setHeight(400).useThumbnail(false)).setSize(6)
                     ),
-                    row(RepeatedForm.repeated(kniha)),
                     row(druh, prijmeni, instituce),
                     row(mesto, vlastnik, jazyk),
                     row(obecne, velikost, hidden),
-                    row(RepeatedForm.repeated(zdroj))
+                    row(RepeatedForm.repeated(zdroj)),
+                    row(NestedTable.nestedTable(kniha))
+
             ));
             retval.setForm(form);
             retval.addFunction(souvisejici);
@@ -193,8 +194,8 @@ public class Exemplar extends Entity {
                             column(new BinaryField(obrazek).setHeight(400).useThumbnail(false)).setSize(6).setEnabled(false),
                             column(new BinaryField(obrazek2).setHeight(400).useThumbnail(false)).setSize(6).setEnabled(false)
                     ),
-                    row(RepeatedForm.repeated(kniha).setEnabled(false)),
-                    row(RepeatedForm.repeated(zdroj).setEnabled(false))
+                    row(RepeatedForm.repeated(zdroj).setEnabled(false)),
+                    row(NestedTable.nestedTable(kniha).setEnabled(false))
             ));
             retval.setForm(form);
             guestView = retval;
