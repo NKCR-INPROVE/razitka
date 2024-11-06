@@ -36,7 +36,7 @@ public class Kniha extends Entity {
     @Override
     protected View initDefaultView() {
         View retval = new View(this).setListPanelWidth(2).setPageSize(20);
-        retval.addProperty(signatura).addProperty(sys).addProperty(carkod);
+        retval.addProperty(signatura).addProperty(sys).addProperty(carkod).addProperty(poznamka, true, false, false);
 
         Form form = new Form(false);
         form.setLayout(column(
