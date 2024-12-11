@@ -74,8 +74,7 @@ public class RelatedServlet extends HttpServlet {
         }
 
         Template temp = getFreemarkerConfig().getTemplate("label.ftlh");
-        Context ctx = new Context(req, resp, new AplikatorServiceBackend(), null);
-        try {
+        try (Context ctx = new Context(req, resp, new AplikatorServiceBackend(), null);){
             out.write("<h1>Související záznamy</h1>\n");
             out.write("<h2>Příjmení: "+prijmeni+"</h2>\n");
             if (!prijmeni.isEmpty()) {
@@ -129,8 +128,6 @@ public class RelatedServlet extends HttpServlet {
                     "  </body>\n</html>");
             out.flush();
             out.close();
-        } finally {
-            ctx.closeTransaction();
         }
     }
 
