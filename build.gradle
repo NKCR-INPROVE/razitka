@@ -37,7 +37,7 @@ subprojects {
 apply plugin: 'war'
 
 dependencies {
-    compile "org.aplikator:aplikator:1.0.5"
+    compile "org.aplikator:aplikator:1.0.6"
     providedCompile 'javax.servlet:javax.servlet-api:3.1.0'
 
     runtime "org.postgresql:postgresql:42.7.2"
