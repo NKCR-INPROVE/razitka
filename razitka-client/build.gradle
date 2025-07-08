@@ -1,19 +1,31 @@
-gwt {
-    gwtVersion = '2.8.1'
-    modules 'cz.incad.razitka.Razitka'
+plugins {
+    id "org.docstr.gwt" version "2.1.6"
+}
+compileJava {
+    options.encoding = 'UTF-8'
 
-    minHeapSize = "512M";
-    maxHeapSize = "1024M";
+    sourceCompatibility = 17
+    targetCompatibility = 17
+}
+
+dependencies {
+    implementation "org.aplikator:aplikator:1.1.4"
+}
+
+gwt {
+    gwtVersion = '2.12.2'
+    modules = ['cz.incad.razitka.Razitka']
+    sourceLevel = '17'
+
+    minHeapSize = "512M"
+    maxHeapSize = "1024M"
+
+    //style = 'PRETTY'
 
     superDev {
-        noPrecompile = true
+        precompile = false
     }
 }
 
 
-dependencies {
-    gwt "org.aplikator:aplikator:1.0.6"
-    compile "org.aplikator:aplikator:1.0.6"
-
-}
 

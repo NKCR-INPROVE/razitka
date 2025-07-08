@@ -2,9 +2,6 @@ buildscript {
     repositories {
         mavenCentral()
     }
-    dependencies {
-        classpath 'org.wisepersist:gwt-gradle-plugin:1.0.5'
-    }
 }
 
 plugins {
@@ -24,31 +21,34 @@ allprojects {
     apply plugin: 'java'
     compileJava   {
         options.encoding = 'UTF-8'
-        sourceCompatibility = "1.8"
-        targetCompatibility = "1.8"
+        sourceCompatibility = "17"
+        targetCompatibility = "17"
+    }
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(17)
+        }
     }
 }
-
-subprojects {
-    apply plugin: 'gwt'
-}
-
 
 apply plugin: 'war'
 
 dependencies {
-    compile "org.aplikator:aplikator:1.0.6"
-    providedCompile 'javax.servlet:javax.servlet-api:3.1.0'
+    implementation "org.aplikator:aplikator:1.1.4"
+    compileOnly 'javax.servlet:javax.servlet-api:3.1.0'
 
-    runtime "org.postgresql:postgresql:42.7.2"
-    compile "org.apache.poi:poi:3.14"
-    compile "org.apache.poi:poi-ooxml:3.14"
-    compile "commons-codec:commons-codec:1.10"
+    runtimeOnly "org.postgresql:postgresql:42.7.7"
+    implementation "org.apache.poi:poi:3.14"
+    implementation "org.apache.poi:poi-ooxml:3.14"
+    implementation "commons-codec:commons-codec:1.10"
 }
 
+
+evaluationDependsOn(':razitka-client')
 war {
-    from project(':razitka-client').tasks.compileGwt.outputs
-    archiveName = "razitka.war"
+    dependsOn project(':razitka-client').tasks.named('gwtCompile')
+    from(project(':razitka-client').layout.buildDirectory.dir("gwt"))
+    archiveFileName = "razitka.war"
 }
 
 
