@@ -9,7 +9,7 @@ compileJava {
 }
 
 dependencies {
-    implementation "org.aplikator:aplikator:1.1.9"
+    implementation "org.aplikator:aplikator:1.1.10"
 }
 
 gwt {
