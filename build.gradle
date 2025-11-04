@@ -34,20 +34,28 @@ allprojects {
 apply plugin: 'war'
 
 dependencies {
-    implementation "org.aplikator:aplikator:1.1.10"
+    implementation "org.aplikator:aplikator:1.1.20"
     compileOnly 'javax.servlet:javax.servlet-api:3.1.0'
 
-    runtimeOnly "org.postgresql:postgresql:42.7.7"
+    runtimeOnly "org.postgresql:postgresql:42.7.8"
     implementation "org.apache.poi:poi:3.14"
     implementation "org.apache.poi:poi-ooxml:3.14"
     implementation "commons-codec:commons-codec:1.10"
 }
 
+configurations.all {
+    exclude group: "org.eclipse.jetty"
+    exclude group: "net.sourceforge.htmlunit"
+    exclude group: "jakarta.servlet"
+    exclude group: "org.gwtproject", module:"gwt-dev"
+    exclude group: "org.lesscss"
+    exclude group: "org.apache.httpcomponents.client5"
+}
 
 evaluationDependsOn(':razitka-client')
 war {
     dependsOn project(':razitka-client').tasks.named('gwtCompile')
-    from(project(':razitka-client').layout.buildDirectory.dir("gwt"))
+    from(project(':razitka-client').layout.buildDirectory.dir("gwt/war"))
     archiveFileName = "razitka.war"
 }
 

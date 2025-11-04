@@ -1,5 +1,5 @@
 plugins {
-    id "org.docstr.gwt" version "2.1.6"
+    id "org.docstr.gwt" version "2.2.7"
 }
 compileJava {
     options.encoding = 'UTF-8'
@@ -9,7 +9,14 @@ compileJava {
 }
 
 dependencies {
-    implementation "org.aplikator:aplikator:1.1.10"
+    implementation "org.aplikator:aplikator:1.1.20"
+}
+
+configurations.all {
+    exclude group: "org.eclipse.jetty"
+    exclude group: "net.sourceforge.htmlunit"
+    exclude group: "jakarta.servlet"
+    exclude group: "org.apache.httpcomponents.client5"
 }
 
 gwt {
