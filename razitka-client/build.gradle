@@ -9,7 +9,7 @@ compileJava {
 }
 
 dependencies {
-    implementation "org.aplikator:aplikator:1.1.20"
+    implementation "org.aplikator:aplikator:1.1.29"
 }
 
 configurations.all {
@@ -20,7 +20,7 @@ configurations.all {
 }
 
 gwt {
-    gwtVersion = '2.12.2'
+    gwtVersion = '2.13.0'
     modules = ['cz.incad.razitka.Razitka']
     sourceLevel = '17'
 

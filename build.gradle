@@ -34,10 +34,10 @@ allprojects {
 apply plugin: 'war'
 
 dependencies {
-    implementation "org.aplikator:aplikator:1.1.20"
+    implementation "org.aplikator:aplikator:1.1.29"
     compileOnly 'javax.servlet:javax.servlet-api:3.1.0'
 
-    runtimeOnly "org.postgresql:postgresql:42.7.8"
+    runtimeOnly "org.postgresql:postgresql:42.7.11"
     implementation "org.apache.poi:poi:3.14"
     implementation "org.apache.poi:poi-ooxml:3.14"
     implementation "commons-codec:commons-codec:1.10"
